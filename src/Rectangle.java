@@ -1,10 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Rectangle is defined by two pairs (x,y).
  * 
  * @author souto
  *
  */
-public class Rectangle {
+public class Rectangle implements INode {
   private double xL, xR, yT, yD; // xLeft, xRight, yTop, yDown.
 
   /**
@@ -39,35 +42,119 @@ public class Rectangle {
   }
 
   /**
-   * Returns an array with the top-left corner (x,y).
+   * Returns the value of the left side.
    * 
-   * @return an array (x,y).
+   * @return xL.
    */
-  public double[] getTopLeftCorner() {
-    double[] ret = new double[2];
-    ret[0] = this.xL;
-    ret[1] = this.yT;
-    return ret;
+  public double getLeft() {
+    return this.xL;
   }
 
   /**
-   * Returns an array with the bottom-right corner (x,y).
+   * Returns the value of the right side;
    * 
-   * @return an array (x,y).
+   * @return the value of the right side;
    */
-  public double[] getBottomRightCorner() {
-    double[] ret = new double[2];
-    ret[0] = this.xR;
-    ret[1] = this.yD;
-    return ret;
+  public double getRight() {
+    return this.xR;
   }
+
+  /**
+   * Returns the value of the top side.
+   * 
+   * @return the value of the top side.
+   */
+  public double getTop() {
+    return this.yT;
+  }
+
+  /**
+   * Returns the value of the bottom side.
+   * 
+   * @return the value of the bottom side.
+   */
+  public double getBottom() {
+    return this.yD;
+  }
+
   /**
    * Returns the area of the rectangle.
+   * 
    * @return the area of the rectangle.
    */
   public double getArea() {
     double width = this.xR - this.xL;
     double height = this.yT - this.yD;
     return (width * height);
+  }
+
+  @Override
+  public Rectangle getMBR() {
+    // The MBR of this rectangle is itself.
+    return this;
+  }
+
+  /**
+   * Returns true if C intersects with this rectangle.
+   * 
+   * @param C the rectangle to check.
+   * @return true if C intersects with this rectangle.
+   */
+  public boolean intersect(Rectangle C) {
+    // If someone of the following conditions is true, they are not intersected.
+    return !(cond1(C) || cond2(C) || cond3(C) || cond4(C));
+  }
+
+  /**
+   * Returns true if C's right side is at the left of the left side of this Rectangle.
+   * 
+   * @param C the rectangle to be compared.
+   * @return true if C's right side is at the left of the left side of this Rectangle.
+   */
+  private boolean cond1(Rectangle C) {
+    double cright = C.getRight();
+    return (cright < this.xL);
+  }
+
+  /**
+   * Returns true if C's left side is at the right of the right side of this rectangle.
+   * 
+   * @param C
+   * @return
+   */
+  private boolean cond2(Rectangle C) {
+    double cleft = C.getLeft();
+    return (cleft > this.xR);
+  }
+
+  /**
+   * Returns true if C's bottom side is over the top side of this.
+   * 
+   * @param C
+   * @return
+   */
+  private boolean cond3(Rectangle C) {
+    double cbottom = C.getBottom();
+    return (cbottom > this.yT);
+  }
+
+  /**
+   * Returns true if C's top side is below of this bottom side.
+   * 
+   * @param C
+   * @return
+   */
+  public boolean cond4(Rectangle C) {
+    double ctop = C.getTop();
+    return (ctop < this.yD);
+  }
+
+  @Override
+  public List<Rectangle> search(Rectangle C) {
+    List<Rectangle> ret = new ArrayList<Rectangle>();
+    if (intersect(C)) {
+      ret.add(this);
+    }
+    return ret;
   }
 }
