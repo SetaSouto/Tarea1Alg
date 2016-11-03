@@ -87,8 +87,10 @@ public class Node implements Rectangle {
    * @return true if it is inserted in this sub-tree.
    */
   public boolean insert(Data C) throws GeneralException {
+    // Data must be inserted in the sub-tree who's area increases the least.
     Node minNode = null;
     double min = Double.MAX_VALUE;
+    // Find insert point.
     for(Rectangle element : this.children) {
       Node child = (Node) element;
       if (child.deltaAreaQuery(C) < min) {
@@ -97,11 +99,13 @@ public class Node implements Rectangle {
       }
     }
     this.refreshMBR();
+    // cond will be false when an successive node's children is empty. This should not happen.
     boolean cond;
     try {
       cond = minNode.insert(C);
-    } catch(GeneralException e) {
+    } catch(GeneralException e) {             // manage overflow
       this.insertChildren(minNode.split());
+      this.children.remove(minNode);
       cond = true;
     }
     return min != Double.MAX_VALUE && cond;
