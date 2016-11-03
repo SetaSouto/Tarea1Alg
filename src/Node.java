@@ -7,7 +7,7 @@ import java.util.List;
  * @author souto
  *
  */
-public abstract class Node implements INode {
+public class Node implements INode {
   private int m, M;
   private Rectangle MBR; // Minimum Bounding Rect of the node's children.
   private List<INode> children; // Children of this node.
@@ -90,25 +90,24 @@ public abstract class Node implements INode {
     return ret;
   }
 
-  /**
-   * Returns the change in the area if C is inserted in this sub-tree.
-   * 
-   * @param C the rectangle to be inserted.
-   * @return the change of tha area of this node's MBR.
-   */
+  @Override
   public double deltaAreaQuery(Rectangle C) {
     double xR = Math.max(this.MBR.getRight(), C.getRight());
     double xL = Math.min(this.MBR.getLeft(), C.getLeft());
     double yT = Math.max(this.MBR.getTop(), C.getTop());
     double yD = Math.min(this.MBR.getBottom(), C.getBottom());
-    return ((xR-xL)*(yT-yD)) - this.MBR.getArea();
+    return ((xR - xL) * (yT - yD)) - this.MBR.getArea();
   }
 
-  /**
-   * Try to insert the rectangle C in a leaf of this sub-tree.
-   * 
-   * @param C the rectangle to be inserted.
-   * @return true if it is inserted in this sub-tree.
-   */
-  public abstract boolean insert(Rectangle C);
+  @Override
+  public boolean insert(Rectangle C) {
+    INode minNode = null;
+    double min = Double.MAX_VALUE;
+    for(INode child : this.children) {
+      if (child.deltaAreaQuery(C) < min) {
+        minNode = child;
+      }
+    }
+    return minNode==null ? false : minNode.insert(C);
+  }
 }

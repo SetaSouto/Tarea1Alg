@@ -7,7 +7,7 @@ import java.util.List;
  * @author souto
  *
  */
-public class Rectangle implements INode {
+public class Rectangle {
   private double xL, xR, yT, yD; // xLeft, xRight, yTop, yDown.
 
   /**
@@ -88,12 +88,6 @@ public class Rectangle implements INode {
     return (width * height);
   }
 
-  @Override
-  public Rectangle getMBR() {
-    // The MBR of this rectangle is itself.
-    return this;
-  }
-
   /**
    * Returns true if C intersects with this rectangle.
    * 
@@ -149,7 +143,12 @@ public class Rectangle implements INode {
     return (ctop < this.yD);
   }
 
-  @Override
+  /**
+   * Returns a list with this rectangle included if intersects with C.
+   * 
+   * @param C rectangle to check intersection.
+   * @return a list with this rectangle included if intersects with C.
+   */
   public List<Rectangle> search(Rectangle C) {
     List<Rectangle> ret = new ArrayList<Rectangle>();
     if (this.intersect(C)) {
