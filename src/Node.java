@@ -21,7 +21,7 @@ public abstract class Node implements INode {
   public Node(int m, int M) {
     this.m = m;
     this.M = M;
-    this.children = new ArrayList<INode>();
+    this.children = new ArrayList<>();
     this.MBR = null;
   }
 
@@ -31,49 +31,29 @@ public abstract class Node implements INode {
   }
 
   /**
-   * Refresh the MBR, it is call when a new child is added to this node.
+   * Refresh the MBR. Called when a new child is added to this node.
    */
   private void refreshMBR() {
     if (this.children.isEmpty()) {
       // If there is no child, the MBR is null.
       // It couldn't be no child because we have at least m children.
       this.MBR = null;
-    } else {
-      INode first = null; // First INode to visit.
-      INode actual; // Actual node visiting.
-      Rectangle r; // MBR of the actual node.
-      double xL = 0, xR = 0, yT = 0, yD = 0;
-      for (int i = 0; i < this.children.size(); i++) {
-        if (first == null) {
-          // There's no first yet.
-          first = this.children.get(i);
-          r = first.getMBR();
-          // Set the corners.
-          xL = r.getLeft();
-          xR = r.getRight();
-          yT = r.getTop();
-          yD = r.getBottom();
-        } else {
-          actual = this.children.get(i);
-          r = actual.getMBR();
-          // Refresh the corners if needed.
-          if (r.getLeft() < xL) {
-            xL = r.getLeft();
-          }
-          if (r.getRight() > xR) {
-            xR = r.getRight();
-          }
-          if (r.getTop() > yT) {
-            yT = r.getTop();
-          }
-          if (r.getBottom() < yD) {
-            yD = r.getBottom();
-          }
-        }
+    }
+    else {
+      double xL, xR, yB, yT;
+      xR = yT = Double.MAX_VALUE;
+      xL = yB = Double.MIN_VALUE;
+      for (INode child : this.children) {
+        Rectangle mbr = child.getMBR();
+        xL = Math.min(xL, mbr.getLeft());
+        xR = Math.max(xR, mbr.getRight());
+        yB = Math.min(yB, mbr.getBottom());
+        yT = Math.max(yT, mbr.getTop());
       }
+
       // We have the maximum/minimum sides, create the MBR.
       try {
-        this.MBR = new Rectangle(xL, yT, xR, yD);
+        this.MBR = new Rectangle(xL, yT, xR, yB);
       } catch (GeneralException e) {
         // If xL==xR or yT==D there's no rectangle.
         this.MBR = null;
