@@ -2,27 +2,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Node is the core of a Rtree.
+ * Interface of a LinearSplitNode. Can be an intern LinearSplitNode (LinearSplitNode Class) or a leaf (Data Class).
  * 
  * @author souto
  *
  */
-public class Node extends AbstractNode {
-  private int m, M;
+public class Node implements Rectangle {
+  protected int m, M;
   private Data MBR; // Minimum Bounding Rect of the node's children.
-  private List<AbstractNode> children; // Children of this node.
+  private Splitter splitter;
+  protected List<Rectangle> children; // Children of this node.
 
   /**
    * Constructor.
-   * 
+   *
    * @param m the minimum elements that has to have the node.
    * @param M the maximum elements that has to have the node.
    */
-  public Node(int m, int M) {
+  public Node(int m, int M, Splitter splitter) {
     this.m = m;
     this.M = M;
     this.children = new ArrayList<>();
     this.MBR = null;
+    this.splitter = splitter;
   }
 
   @Override
@@ -33,7 +35,7 @@ public class Node extends AbstractNode {
   /**
    * Refresh the MBR. Called when a new child is added to this node.
    */
-  private void refreshMBR() {
+  protected void refreshMBR() {
     if (this.children.isEmpty()) {
       // If there is no child, the MBR is null.
       // It couldn't be no child because we have at least m children.
@@ -43,7 +45,7 @@ public class Node extends AbstractNode {
       double xL, xR, yB, yT;
       xR = yT = Double.MAX_VALUE;
       xL = yB = Double.MIN_VALUE;
-      for (AbstractNode child : this.children) {
+      for (Rectangle child : this.children) {
         Data mbr = child.getMBR();
         xL = Math.min(xL, mbr.getLeft());
         xR = Math.max(xR, mbr.getRight());
@@ -64,14 +66,13 @@ public class Node extends AbstractNode {
   @Override
   public List<Data> search(Data C) {
     List<Data> ret = new ArrayList<>();
-    for (AbstractNode child : this.children) {
+    for (Rectangle child : this.children) {
       ret.addAll(child.search(C));
     }
     return ret;
   }
 
-  @Override
-  public double deltaAreaQuery(Data C) {
+  protected double deltaAreaQuery(Data C) {
     double xR = Math.max(this.MBR.getRight(), C.getRight());
     double xL = Math.min(this.MBR.getLeft(), C.getLeft());
     double yT = Math.max(this.MBR.getTop(), C.getTop());
@@ -79,16 +80,42 @@ public class Node extends AbstractNode {
     return ((xR - xL) * (yT - yD)) - this.MBR.getArea();
   }
 
-  @Override
-  public boolean insert(Data C) {
-    AbstractNode minNode = null;
+  /**
+   * Try to insert the rectangle C in a child of this sub-tree.
+   *
+   * @param C the rectangle to be inserted.
+   * @return true if it is inserted in this sub-tree.
+   */
+  public boolean insert(Data C) throws GeneralException {
+    Node minNode = null;
     double min = Double.MAX_VALUE;
-    for(AbstractNode child : this.children) {
+    for(Rectangle element : this.children) {
+      Node child = (Node) element;
       if (child.deltaAreaQuery(C) < min) {
+        min = child.deltaAreaQuery(C);
         minNode = child;
       }
     }
     this.refreshMBR();
-    return min==Double.MAX_VALUE ? false : minNode.insert(C);
+    boolean cond;
+    try {
+      cond = minNode.insert(C);
+    } catch(GeneralException e) {
+      this.insertChildren(minNode.split());
+      cond = true;
+    }
+    return min != Double.MAX_VALUE && cond;
   }
+
+  private void insertChildren(List<Node> newNodes) throws GeneralException {
+    this.children.addAll(newNodes);
+    if (this.children.size() > this.M) {
+      throw new GeneralException("Node overflow");
+    }
+  }
+
+  protected List<Node> split() {
+    return this.splitter.split(this.children);
+  }
+
 }

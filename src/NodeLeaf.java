@@ -1,13 +1,16 @@
 public class NodeLeaf extends Node {
 
-  public NodeLeaf(int m, int M) {
-    super(m, M);
+  public NodeLeaf(int m, int M, Splitter splitter) {
+    super(m, M, splitter);
   }
 
   @Override
-  public boolean insert(Data C) {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean insert(Data C) throws GeneralException {
+    this.children.add(C);
+
+    if (this.children.size() > this.M) throw new GeneralException("Leaf overflow");
+
+    return true;
   }
 
 }
