@@ -88,6 +88,7 @@ public class Node implements INode {
         minNode = child;
       }
     }
-    return minNode==null ? false : minNode.insert(C);
+    this.refreshMBR();
+    return min==Double.MAX_VALUE ? false : minNode.insert(C);
   }
 }
