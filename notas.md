@@ -9,3 +9,5 @@ En teoría los rectángulos finales se encuentran en las hojas (que son nodos ta
 Un nodo puede tener a lo más $M$ nodos hijos, o en su defecto, hojas (Rectangle), o sea una solución es hacer un collections de hijos.
 
 OJO: Node es una clase abstracta, donde se debe implementar la inserción (así tenemos distintas versiones del split).  
+
+Cada vez que hagamos un insert al final **tenemos que llamar a refreshMBR()**.  
