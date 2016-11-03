@@ -8,9 +8,9 @@ import java.util.List;
  *
  */
 public abstract class Node implements INode {
-  int m, M;
-  Rectangle MBR; // Minimum Bounding Rect of the node's children.
-  List<INode> children; // Children of this node.
+  private int m, M;
+  private Rectangle MBR; // Minimum Bounding Rect of the node's children.
+  private List<INode> children; // Children of this node.
 
   /**
    * Constructor.
@@ -64,10 +64,24 @@ public abstract class Node implements INode {
   @Override
   public List<Rectangle> search(Rectangle C) {
     List<Rectangle> ret = new ArrayList<Rectangle>();
-    for (int i = 0; i < this.children.size(); i++) {
-      ret.addAll(this.children.get(i).search(C));
+    for (INode child : this.children) {
+      ret.addAll(child.search(C));
     }
     return ret;
+  }
+
+  /**
+   * Returns the change in the area if C is inserted in this sub-tree.
+   * 
+   * @param C the rectangle to be inserted.
+   * @return the change of tha area of this node's MBR.
+   */
+  public double deltaAreaQuery(Rectangle C) {
+    double xR = Math.max(this.MBR.getRight(), C.getRight());
+    double xL = Math.min(this.MBR.getLeft(), C.getLeft());
+    double yT = Math.max(this.MBR.getTop(), C.getTop());
+    double yD = Math.min(this.MBR.getBottom(), C.getBottom());
+    return ((xR-xL)*(yT-yD)) - this.MBR.getArea();
   }
 
   /**
