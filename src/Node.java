@@ -7,10 +7,10 @@ import java.util.List;
  * @author souto
  *
  */
-public class Node implements INode {
+public class Node extends AbstractNode {
   private int m, M;
-  private Rectangle MBR; // Minimum Bounding Rect of the node's children.
-  private List<INode> children; // Children of this node.
+  private Data MBR; // Minimum Bounding Rect of the node's children.
+  private List<AbstractNode> children; // Children of this node.
 
   /**
    * Constructor.
@@ -26,7 +26,7 @@ public class Node implements INode {
   }
 
   @Override
-  public Rectangle getMBR() {
+  public Data getMBR() {
     return this.MBR;
   }
 
@@ -43,8 +43,8 @@ public class Node implements INode {
       double xL, xR, yB, yT;
       xR = yT = Double.MAX_VALUE;
       xL = yB = Double.MIN_VALUE;
-      for (INode child : this.children) {
-        Rectangle mbr = child.getMBR();
+      for (AbstractNode child : this.children) {
+        Data mbr = child.getMBR();
         xL = Math.min(xL, mbr.getLeft());
         xR = Math.max(xR, mbr.getRight());
         yB = Math.min(yB, mbr.getBottom());
@@ -53,7 +53,7 @@ public class Node implements INode {
 
       // We have the maximum/minimum sides, create the MBR.
       try {
-        this.MBR = new Rectangle(xL, yT, xR, yB);
+        this.MBR = new Data(xL, yT, xR, yB);
       } catch (GeneralException e) {
         // If xL==xR or yT==D there's no rectangle.
         this.MBR = null;
@@ -62,16 +62,16 @@ public class Node implements INode {
   }
 
   @Override
-  public List<Rectangle> search(Rectangle C) {
-    List<Rectangle> ret = new ArrayList<Rectangle>();
-    for (INode child : this.children) {
+  public List<Data> search(Data C) {
+    List<Data> ret = new ArrayList<>();
+    for (AbstractNode child : this.children) {
       ret.addAll(child.search(C));
     }
     return ret;
   }
 
   @Override
-  public double deltaAreaQuery(Rectangle C) {
+  public double deltaAreaQuery(Data C) {
     double xR = Math.max(this.MBR.getRight(), C.getRight());
     double xL = Math.min(this.MBR.getLeft(), C.getLeft());
     double yT = Math.max(this.MBR.getTop(), C.getTop());
@@ -80,10 +80,10 @@ public class Node implements INode {
   }
 
   @Override
-  public boolean insert(Rectangle C) {
-    INode minNode = null;
+  public boolean insert(Data C) {
+    AbstractNode minNode = null;
     double min = Double.MAX_VALUE;
-    for(INode child : this.children) {
+    for(AbstractNode child : this.children) {
       if (child.deltaAreaQuery(C) < min) {
         minNode = child;
       }
