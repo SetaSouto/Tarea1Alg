@@ -152,7 +152,7 @@ public class Rectangle implements INode {
   @Override
   public List<Rectangle> search(Rectangle C) {
     List<Rectangle> ret = new ArrayList<Rectangle>();
-    if (intersect(C)) {
+    if (this.intersect(C)) {
       ret.add(this);
     }
     return ret;
