@@ -23,24 +23,11 @@ public class Rectangle {
     if (x1 == x2 || y1 == y2) {
       throw new GeneralException("Rectangle with no area.");
     }
-    if (x1 < x2) {
-      // In this case x1 is at the left of x2, is correct.
-      this.xL = x1;
-      this.xR = x2;
-    } else {
-      this.xL = x2;
-      this.xR = x1;
-    }
-    if (y1 > y2) {
-      // In this case y1 is over y2, is correct.
-      this.yT = y1;
-      this.yD = y2;
-    } else {
-      this.yT = y2;
-      this.yD = y1;
-    }
+    this.xL = Math.min(x1, x2);
+    this.xR = Math.max(x1, x2);
+    this.yD = Math.min(y1, y2);
+    this.yT = Math.max(y1, y2);
   }
-
   /**
    * Returns the value of the left side.
    * 
@@ -83,9 +70,7 @@ public class Rectangle {
    * @return the area of the rectangle.
    */
   public double getArea() {
-    double width = this.xR - this.xL;
-    double height = this.yT - this.yD;
-    return (width * height);
+    return ((this.xR - this.xL) * (this.yT - this.yD));
   }
 
   /**
@@ -106,8 +91,7 @@ public class Rectangle {
    * @return true if C's right side is at the left of the left side of this Rectangle.
    */
   private boolean cond1(Rectangle C) {
-    double cright = C.getRight();
-    return (cright < this.xL);
+    return (C.getRight() < this.xL);
   }
 
   /**
@@ -117,8 +101,7 @@ public class Rectangle {
    * @return
    */
   private boolean cond2(Rectangle C) {
-    double cleft = C.getLeft();
-    return (cleft > this.xR);
+    return (C.getLeft() > this.xR);
   }
 
   /**
@@ -128,8 +111,7 @@ public class Rectangle {
    * @return
    */
   private boolean cond3(Rectangle C) {
-    double cbottom = C.getBottom();
-    return (cbottom > this.yT);
+    return (C.getBottom() > this.yT);
   }
 
   /**
@@ -138,9 +120,8 @@ public class Rectangle {
    * @param C
    * @return
    */
-  public boolean cond4(Rectangle C) {
-    double ctop = C.getTop();
-    return (ctop < this.yD);
+  public boolean cond4(Rectangle C) {;
+    return (C.getTop() < this.yD);
   }
 
   /**
