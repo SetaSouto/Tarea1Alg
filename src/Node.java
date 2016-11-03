@@ -40,11 +40,11 @@ public abstract class Node implements INode {
       this.MBR = null;
     } else {
       INode first = null; // First INode to visit.
-      INode actual;       // Actual node visiting.
-      Rectangle r;        // MBR of the actual node.
-      double xL=0, xR=0, yT=0, yD=0; 
+      INode actual; // Actual node visiting.
+      Rectangle r; // MBR of the actual node.
+      double xL = 0, xR = 0, yT = 0, yD = 0;
       for (int i = 0; i < this.children.size(); i++) {
-        if (first==null) {
+        if (first == null) {
           // There's no first yet.
           first = this.children.get(i);
           r = first.getMBR();
@@ -73,7 +73,7 @@ public abstract class Node implements INode {
       }
       // We have the maximum/minimum sides, create the MBR.
       try {
-        this.MBR = new Rectangle(xL,yT,xR,yD);
+        this.MBR = new Rectangle(xL, yT, xR, yD);
       } catch (GeneralException e) {
         // If xL==xR or yT==D there's no rectangle.
         this.MBR = null;
@@ -83,8 +83,11 @@ public abstract class Node implements INode {
 
   @Override
   public List<Rectangle> search(Rectangle C) {
-    // TODO
-    return null;
+    List<Rectangle> ret = new ArrayList<Rectangle>();
+    for (int i = 0; i < this.children.size(); i++) {
+      ret.addAll(this.children.get(i).search(C));
+    }
+    return ret;
   }
 
   /**
