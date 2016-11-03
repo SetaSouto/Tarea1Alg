@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Interface of a LinearSplitNode. Can be an intern LinearSplitNode (LinearSplitNode Class) or a leaf (Data Class).
+ * Interface of a LinearSplitNode. Can be an intern LinearSplitNode (LinearSplitNode Class) or a
+ * leaf (Data Class).
  * 
  * @author souto
  *
@@ -40,8 +41,7 @@ public class Node implements Rectangle {
       // If there is no child, the MBR is null.
       // It couldn't be no child because we have at least m children.
       this.MBR = null;
-    }
-    else {
+    } else {
       double xL, xR, yB, yT;
       xR = yT = Double.MAX_VALUE;
       xL = yB = Double.MIN_VALUE;
@@ -72,6 +72,12 @@ public class Node implements Rectangle {
     return ret;
   }
 
+  /**
+   * Returns how much would increase the MBR's area if C is inserted.
+   * 
+   * @param C data to be inserted.
+   * @return how much would increase MBR's area.
+   */
   protected double deltaAreaQuery(Data C) {
     double xR = Math.max(this.MBR.getRight(), C.getRight());
     double xL = Math.min(this.MBR.getLeft(), C.getLeft());
@@ -89,7 +95,7 @@ public class Node implements Rectangle {
   public boolean insert(Data C) throws GeneralException {
     Node minNode = null;
     double min = Double.MAX_VALUE;
-    for(Rectangle element : this.children) {
+    for (Rectangle element : this.children) {
       Node child = (Node) element;
       if (child.deltaAreaQuery(C) < min) {
         min = child.deltaAreaQuery(C);
@@ -100,13 +106,19 @@ public class Node implements Rectangle {
     boolean cond;
     try {
       cond = minNode.insert(C);
-    } catch(GeneralException e) {
+    } catch (GeneralException e) {
       this.insertChildren(minNode.split());
       cond = true;
     }
     return min != Double.MAX_VALUE && cond;
   }
 
+  /**
+   * Insert new nodes to this node's children.
+   * 
+   * @param newNodes nodes to be inserted.
+   * @throws GeneralException in case of this node's size is over M after insertion.
+   */
   private void insertChildren(List<Node> newNodes) throws GeneralException {
     this.children.addAll(newNodes);
     if (this.children.size() > this.M) {
@@ -114,6 +126,11 @@ public class Node implements Rectangle {
     }
   }
 
+  /**
+   * Makes a split in case of overflow.
+   * 
+   * @return a list with two nodes to replace this node.
+   */
   protected List<Node> split() {
     return this.splitter.split(this.children);
   }
