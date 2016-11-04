@@ -13,5 +13,5 @@ interface Splitter {
    * @param children to bre splitted.
    * @return two List of Nodes.
    */
-  List<Rectangle>[] split(List<Rectangle> children);
+  Node[] split(List<Rectangle> children, Node n1, Node n2);
 }

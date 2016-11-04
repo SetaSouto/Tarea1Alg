@@ -44,10 +44,12 @@ public class NodeLeaf extends Node {
    * @return a list with two nodes to replace this node.
    */
   protected List<NodeLeaf> split() {
-    List<Rectangle>[] splitResult = this.splitter.split(this.children);
+    Node[] splitResult = this.splitter.split(this.children,
+        new NodeLeaf(this.m, this.M, this.splitter), new NodeLeaf(this.m, this.M, this.splitter));
     List<NodeLeaf> ret = new ArrayList<NodeLeaf>();
-    ret.add(new NodeLeaf(this.m, this.M, this.splitter, splitResult[0]));
-    ret.add(new NodeLeaf(this.m, this.M, this.splitter, splitResult[1]));
+    // Cast to NodeLeaf
+    ret.add((NodeLeaf) splitResult[0]);
+    ret.add((NodeLeaf) splitResult[1]);
     return ret;
   }
 

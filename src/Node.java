@@ -29,19 +29,6 @@ public class Node implements Rectangle {
     this.splitter = splitter;
   }
 
-  /**
-   * Constructor.
-   * 
-   * @param m minimum elements in the node.
-   * @param M maximum elements in the node.
-   * @param splitter heuristic to make the split.
-   * @param children intial children.
-   */
-  public Node(int m, int M, Splitter splitter, List<Rectangle> children) {
-    this(m, M, splitter);
-    this.children.addAll(children);
-  }
-
   @Override
   public Data getMBR() {
     return this.MBR;
@@ -150,10 +137,11 @@ public class Node implements Rectangle {
    * @return a list with two nodes to replace this node.
    */
   private List<Node> split() {
-    List<Rectangle>[] splitResult = this.splitter.split(this.children);
+    Node[] splitResult = this.splitter.split(this.children, new Node(this.m, this.M, this.splitter),
+        new Node(this.m, this.M, this.splitter));
     List<Node> ret = new ArrayList<Node>();
-    ret.add(new Node(this.m, this.M, this.splitter, splitResult[0]));
-    ret.add(new Node(this.m, this.M, this.splitter, splitResult[1]));
+    ret.add(splitResult[0]);
+    ret.add(splitResult[1]);
     return ret;
   }
 
