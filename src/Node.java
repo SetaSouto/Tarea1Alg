@@ -131,7 +131,7 @@ public class Node implements Rectangle {
    * 
    * @return a list with two nodes to replace this node.
    */
-  protected List<Node> split() {
+  private List<Node> split() {
     return this.splitter.split(this.children);
   }
 
