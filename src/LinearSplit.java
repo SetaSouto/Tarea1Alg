@@ -7,19 +7,28 @@ import java.util.List;
  *
  */
 public class LinearSplit implements Splitter {
-  int m;
+  int m, M;
 
   /**
    * Constructor.
    * 
    * @param m indicates minimum size of a node.
+   * @param M indicates the maximum size of a node.
    */
-  public LinearSplit(int m) {
+  public LinearSplit(int m, int M) {
     this.m = m;
+    this.M = M;
   }
 
   @Override
-  public List<Node> split(List<Rectangle> children) {
-    
+  public List<Node> splitNode(List<Rectangle> children) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<NodeLeaf> splitNodeLeaf(List<Rectangle> children) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

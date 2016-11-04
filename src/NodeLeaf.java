@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class NodeLeaf extends Node {
   
   /**
@@ -17,6 +19,15 @@ public class NodeLeaf extends Node {
     if (this.children.size() > this.M) throw new GeneralException("Leaf overflow");
 
     return true;
+  }
+  
+  /**
+   * Makes a split in case of overflow.
+   *
+   * @return a list with two nodes to replace this node.
+   */
+  protected List<NodeLeaf> split() {
+    return this.splitter.splitNodeLeaf(this.children);
   }
 
 }

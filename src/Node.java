@@ -11,7 +11,7 @@ import java.util.List;
 public class Node implements Rectangle {
   protected int m, M;
   private Data MBR; // Minimum Bounding Rect of the node's children.
-  private Splitter splitter;
+  protected Splitter splitter;
   protected List<Rectangle> children; // Children of this node.
 
   /**
@@ -123,7 +123,7 @@ public class Node implements Rectangle {
    * @param newNodes nodes to be inserted.
    * @throws GeneralException in case of this node's size is over M after insertion.
    */
-  private void insertChildren(List<Node> newNodes) throws GeneralException {
+  private void insertChildren(List<? extends Node> newNodes) throws GeneralException {
     this.children.addAll(newNodes);
     if (this.children.size() > this.M) {
       throw new GeneralException("Node overflow");
@@ -136,7 +136,7 @@ public class Node implements Rectangle {
    * @return a list with two nodes to replace this node.
    */
   private List<Node> split() {
-    return this.splitter.split(this.children);
+    return this.splitter.splitNode(this.children);
   }
 
 }
