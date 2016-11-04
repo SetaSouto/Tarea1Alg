@@ -21,7 +21,7 @@ public class LinearSplit implements Splitter {
   }
 
   @Override
-  public List<Rectangle>[] split(List<Rectangle> children, Node n1, Node n2) {
+  public Node[] split(List<Rectangle> children, Node n1, Node n2) {
     Rectangle[] pairX = this.getPairX(children);
     Rectangle[] pairY = this.getPairY(children);
     // (max xL - min xR)/(range X):
@@ -41,18 +41,46 @@ public class LinearSplit implements Splitter {
       r1 = pairY[0];
       r2 = pairY[1];
     }
-    
+
     // Delete the pair from children:
     children.remove(r1);
     children.remove(r2);
-    
+
     // How many rectangles are:
     int countRest = children.size();
-    
-    // Create the two arrays:
-    
 
+    // Add r1 to n1 add r2 to n2:
+    n1.insertChild(r1);
+    n2.insertChild(r2);
 
+    // Iterate over the children
+    for (Rectangle child : children) {
+      if (n1.deltaAreaQuery(child.getMBR()) < n2.deltaAreaQuery(child.getMBR())) {
+        // n1's MBR must increase less than n2's MBR
+        if (countRest <= (m - n2.getChildrenSize())) {
+          // There are just the elements that n2 needs to keep the invariant of have at least m
+          // children
+          n2.insertChild(child);
+        } else {
+          n1.insertChild(child);
+        }
+      } else {
+        if (countRest <= (m - n1.getChildrenSize())) {
+          n1.insertChild(child);
+        } else {
+          n2.insertChild(child);
+        }
+      }
+      // Delete the rectangle recently added:
+      countRest--;
+    }
+
+    if (n1.getChildrenSize() < m || n2.getChildrenSize() < m) {
+      System.out.println("ERROR: Invariant m broken.");;
+    }
+
+    Node[] ret = {n1, n2};
+    return ret;
   }
 
   /**

@@ -124,12 +124,34 @@ public class Node implements Rectangle {
    * @param newNodes nodes to be inserted.
    * @throws GeneralException in case of this node's size is over M after insertion.
    */
-  public void insertChildren(List<? extends Node> newNodes) throws GeneralException {
+  private void insertChildren(List<? extends Node> newNodes) throws GeneralException {
     this.children.addAll(newNodes);
     if (this.children.size() > this.M) {
       throw new GeneralException("Node overflow");
     }
-    this.refreshMBR();
+  }
+
+  /**
+   * Insert a child in this node.
+   * 
+   * @param child to be inserted.
+   * @throws GeneralException in case of overflow.
+   */
+  public void insertChild(Rectangle child) {
+    this.children.add(child);
+    // Only called by Splitter, making a split is impossible to broke M invariant.
+    // if (this.children.size() > this.M) {
+    // throw new GeneralException("Node overflow");
+    // }
+  }
+
+  /**
+   * Returns how many children has this node.
+   * 
+   * @return children size.
+   */
+  public int getChildrenSize() {
+    return this.children.size();
   }
 
   /**
