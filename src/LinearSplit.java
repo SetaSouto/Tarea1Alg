@@ -21,14 +21,9 @@ public class LinearSplit implements Splitter {
   }
 
   @Override
-  public List<Node> splitNode(List<Rectangle> children) {
+  public List<Rectangle>[] split(List<Rectangle> children) {
     // TODO Auto-generated method stub
     return null;
   }
-
-  @Override
-  public List<NodeLeaf> splitNodeLeaf(List<Rectangle> children) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+  
 }

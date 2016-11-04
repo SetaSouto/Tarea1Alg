@@ -19,6 +19,7 @@ public class Node implements Rectangle {
    *
    * @param m the minimum elements that has to have the node.
    * @param M the maximum elements that has to have the node.
+   * @param splitter herustic to make the split.
    */
   public Node(int m, int M, Splitter splitter) {
     this.m = m;
@@ -26,6 +27,19 @@ public class Node implements Rectangle {
     this.children = new ArrayList<>();
     this.MBR = null;
     this.splitter = splitter;
+  }
+
+  /**
+   * Constructor.
+   * 
+   * @param m minimum elements in the node.
+   * @param M maximum elements in the node.
+   * @param splitter heuristic to make the split.
+   * @param children intial children.
+   */
+  public Node(int m, int M, Splitter splitter, List<Rectangle> children) {
+    this(m, M, splitter);
+    this.children.addAll(children);
   }
 
   @Override
@@ -97,7 +111,7 @@ public class Node implements Rectangle {
     Node minNode = null;
     double min = Double.MAX_VALUE;
     // Find insert point.
-    for(Rectangle element : this.children) {
+    for (Rectangle element : this.children) {
       Node child = (Node) element;
       if (child.deltaAreaQuery(C) < min) {
         min = child.deltaAreaQuery(C);
@@ -109,7 +123,7 @@ public class Node implements Rectangle {
     boolean cond;
     try {
       cond = minNode.insert(C);
-    } catch(GeneralException e) {             // manage overflow
+    } catch (GeneralException e) { // manage overflow
       this.insertChildren(minNode.split());
       this.children.remove(minNode);
       cond = true;
@@ -136,7 +150,11 @@ public class Node implements Rectangle {
    * @return a list with two nodes to replace this node.
    */
   private List<Node> split() {
-    return this.splitter.splitNode(this.children);
+    List<Rectangle>[] splitResult = this.splitter.split(this.children);
+    List<Node> ret = new ArrayList<Node>();
+    ret.add(new Node(this.m, this.M, this.splitter, splitResult[0]));
+    ret.add(new Node(this.m, this.M, this.splitter, splitResult[1]));
+    return ret;
   }
 
 }

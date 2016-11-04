@@ -8,18 +8,10 @@ import java.util.List;
  */
 interface Splitter {
   /**
-   * Returns two nodes in case of overflow in a Node.
+   * Returns an array with the children splitted.
    * 
    * @param children to bre splitted.
-   * @return two nodes with the children.
+   * @return two List of Nodes.
    */
-  List<Node> splitNode(List<Rectangle> children);
-
-  /**
-   * Returnw two NodesLeaf in case of overflow in a leaf.
-   * 
-   * @param children to be splitted.
-   * @return two NodesLeaf.
-   */
-  List<NodeLeaf> splitNodeLeaf(List<Rectangle> children);
+  List<Rectangle>[] split(List<Rectangle> children);
 }
