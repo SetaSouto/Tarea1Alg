@@ -79,7 +79,7 @@ public class Node implements Rectangle {
    * @param C data to be inserted.
    * @return how much would increase MBR's area.
    */
-  protected double deltaAreaQuery(Data C) {
+  public double deltaAreaQuery(Data C) {
     double xR = Math.max(this.MBR.getRight(), C.getRight());
     double xL = Math.min(this.MBR.getLeft(), C.getLeft());
     double yT = Math.max(this.MBR.getTop(), C.getTop());
@@ -124,11 +124,12 @@ public class Node implements Rectangle {
    * @param newNodes nodes to be inserted.
    * @throws GeneralException in case of this node's size is over M after insertion.
    */
-  private void insertChildren(List<? extends Node> newNodes) throws GeneralException {
+  public void insertChildren(List<? extends Node> newNodes) throws GeneralException {
     this.children.addAll(newNodes);
     if (this.children.size() > this.M) {
       throw new GeneralException("Node overflow");
     }
+    this.refreshMBR();
   }
 
   /**
