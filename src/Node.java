@@ -118,7 +118,6 @@ public class Node implements Rectangle {
         minNode = child;
       }
     }
-    this.refreshMBR();
     // cond will be false when an successive node's children is empty. This should not happen.
     boolean cond;
     try {
@@ -128,6 +127,7 @@ public class Node implements Rectangle {
       this.children.remove(minNode);
       cond = true;
     }
+    this.refreshMBR();
     return min != Double.MAX_VALUE && cond;
   }
 

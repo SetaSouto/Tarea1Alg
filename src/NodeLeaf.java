@@ -34,6 +34,7 @@ public class NodeLeaf extends Node {
     if (this.children.size() > this.M)
       throw new GeneralException("Leaf overflow");
 
+    this.refreshMBR();
     return true;
   }
 
