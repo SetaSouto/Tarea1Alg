@@ -1,5 +1,5 @@
 import java.util.List;
 
-interface Splitter {
-  List<Node> split(List<Rectangle> children);
+interface Splitter < E > {
+  List<E> split(List<Rectangle> children);
 }

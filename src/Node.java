@@ -74,7 +74,7 @@ public class Node implements Rectangle {
 
   /**
    * Returns how much would increase the MBR's area if C is inserted.
-   * 
+   *
    * @param C data to be inserted.
    * @return how much would increase MBR's area.
    */
@@ -93,9 +93,11 @@ public class Node implements Rectangle {
    * @return true if it is inserted in this sub-tree.
    */
   public boolean insert(Data C) throws GeneralException {
+    // Data must be inserted in the sub-tree who's area increases the least.
     Node minNode = null;
     double min = Double.MAX_VALUE;
-    for (Rectangle element : this.children) {
+    // Find insert point.
+    for(Rectangle element : this.children) {
       Node child = (Node) element;
       if (child.deltaAreaQuery(C) < min) {
         min = child.deltaAreaQuery(C);
@@ -103,11 +105,13 @@ public class Node implements Rectangle {
       }
     }
     this.refreshMBR();
+    // cond will be false when an successive node's children is empty. This should not happen.
     boolean cond;
     try {
       cond = minNode.insert(C);
-    } catch (GeneralException e) {
+    } catch(GeneralException e) {             // manage overflow
       this.insertChildren(minNode.split());
+      this.children.remove(minNode);
       cond = true;
     }
     return min != Double.MAX_VALUE && cond;
@@ -115,7 +119,7 @@ public class Node implements Rectangle {
 
   /**
    * Insert new nodes to this node's children.
-   * 
+   *
    * @param newNodes nodes to be inserted.
    * @throws GeneralException in case of this node's size is over M after insertion.
    */
@@ -128,7 +132,7 @@ public class Node implements Rectangle {
 
   /**
    * Makes a split in case of overflow.
-   * 
+   *
    * @return a list with two nodes to replace this node.
    */
   private List<Node> split() {
