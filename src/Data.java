@@ -132,4 +132,13 @@ public class Data implements Rectangle {
         }
         return ret;
     }
+
+    /**
+     * Return true if this is equal to C (dimensions are tha same and they are in the same
+     * position).
+     */
+    public boolean equals(Data C) {
+        return (this.getLeft() == C.getLeft() && this.getRight() == C.getRight() &&
+                this.getTop() == C.getTop() && this.getBottom() == C.getBottom());
+    }
 }

@@ -66,4 +66,9 @@ class DataTest {
         assertEquals(list, data.search(data2));
     }
 
+    @Test
+    void equals() throws GeneralException {
+        assertTrue(this.data.equals(new Data(10, 10, 0, 0)));
+    }
+
 }

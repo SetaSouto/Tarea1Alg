@@ -1,8 +1,9 @@
 import java.util.List;
 
-public class QuadraticSplit < E > implements Splitter < E > {
+public class QuadraticSplit implements Splitter {
+
   @Override
-  public List<E> split(List<Rectangle> children) {
-    return null;
+  public Node[] split(List<Rectangle> children, Node n1, Node n2) {
+    return new Node[0];
   }
 }

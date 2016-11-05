@@ -1,7 +1,7 @@
 import java.util.List;
 
 /**
- * Every splitter that implements an herustic must implements this.
+ * Every splitter that implements an heuristic must implements this.
  * 
  * @author souto
  *
