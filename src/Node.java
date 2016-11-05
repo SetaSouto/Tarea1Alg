@@ -1,12 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Interface of a LinearSplitNode. Can be an intern LinearSplitNode (LinearSplitNode Class) or a
- * leaf (Data Class).
- *
- * @author souto
- */
 public class Node implements Rectangle {
     protected int m, M;
     private Data MBR; // Minimum Bounding Rect of the node's children.

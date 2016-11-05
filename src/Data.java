@@ -27,6 +27,20 @@ public class Data implements Rectangle {
         this.yT = Math.max(y1, y2);
     }
 
+    @Override
+    public Data getMBR() {
+        return this;
+    }
+
+    @Override
+    public List<Data> search(Data C) {
+        List<Data> ret = new ArrayList<>();
+        if (this.intersect(C)) {
+            ret.add(this);
+        }
+        return ret;
+    }
+
     /**
      * Returns the value of the left side.
      *
@@ -112,25 +126,6 @@ public class Data implements Rectangle {
      */
     private boolean cond4(Data C) {
         return (C.getTop() < this.yD);
-    }
-
-    @Override
-    public Data getMBR() {
-        return this;
-    }
-
-    /**
-     * Returns a list with this rectangle included if intersects with C.
-     *
-     * @param C rectangle to check intersection.
-     * @return a list with this rectangle included if intersects with C.
-     */
-    public List<Data> search(Data C) {
-        List<Data> ret = new ArrayList<Data>();
-        if (this.intersect(C)) {
-            ret.add(this);
-        }
-        return ret;
     }
 
     /**
