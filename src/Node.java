@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of an R-Tree Node.
+ */
 public class Node implements Rectangle {
     protected int m, M;
     private Data MBR; // Minimum Bounding Rect of the node's children.
@@ -8,11 +11,11 @@ public class Node implements Rectangle {
     protected List<Rectangle> children; // Children of this node.
 
     /**
-     * Constructor.
+     * Default constructor.
      *
      * @param m        the minimum elements that has to have the node.
      * @param M        the maximum elements that has to have the node.
-     * @param splitter herustic to make the split.
+     * @param splitter split heuristics.
      */
     public Node(int m, int M, Splitter splitter) {
         this.m = m;
@@ -25,6 +28,32 @@ public class Node implements Rectangle {
     @Override
     public Data getMBR() {
         return this.MBR;
+    }
+
+    @Override
+    public List<Data> search(Data C) {
+        List<Data> ret = new ArrayList<>();
+        for (Rectangle child : this.children) {
+            ret.addAll(child.search(C));
+        }
+        return ret;
+    }
+
+    /**
+     * Returns how many children has this node.
+     *
+     * @return children size.
+     */
+    public int getChildrenSize() {
+        return this.children.size();
+    }
+
+    /**
+     * Creates a "cloned" node with the same parameters.
+     * @return a new Node object set with the same parameters.
+     */
+    public Node newNode() {
+        return new Node(this.m, this.M, this.splitter);
     }
 
     /**
@@ -55,15 +84,6 @@ public class Node implements Rectangle {
                 this.MBR = null;
             }
         }
-    }
-
-    @Override
-    public List<Data> search(Data C) {
-        List<Data> ret = new ArrayList<>();
-        for (Rectangle child : this.children) {
-            ret.addAll(child.search(C));
-        }
-        return ret;
     }
 
     /**
@@ -103,7 +123,7 @@ public class Node implements Rectangle {
         try {
             cond = minNode.insert(C);
         } catch (GeneralException e) { // manage overflow
-            this.insertChildren(minNode.split());
+            this.addChildren(minNode.split());
             this.children.remove(minNode);
             cond = true;
         }
@@ -112,40 +132,27 @@ public class Node implements Rectangle {
     }
 
     /**
-     * Insert new nodes to this node's children.
+     * Adds a new child node. Must only be called by a splitter, as it might otherwise cause a node overflow.
+     *
+     * @param child to be inserted.
+     */
+    protected void addChild(Rectangle child) {
+        this.children.add(child);
+        this.refreshMBR();
+    }
+
+    /**
+     * Adds new nodes to this node's children.
      *
      * @param newNodes nodes to be inserted.
      * @throws GeneralException in case of this node's size is over M after insertion.
      */
-    private void insertChildren(List<? extends Node> newNodes) throws GeneralException {
+    private void addChildren(List<? extends Node> newNodes) throws GeneralException {
         this.children.addAll(newNodes);
         if (this.children.size() > this.M) {
-            throw new GeneralException("Node overflow");
+            throw new GeneralException("addChildren: node overflow");
         }
-    }
-
-    /**
-     * Insert a child in this node.
-     *
-     * @param child to be inserted.
-     * @throws GeneralException in case of overflow.
-     */
-    public void insertChild(Rectangle child) {
-        this.children.add(child);
         this.refreshMBR();
-        // Only called by Splitter, making a split is impossible to broke M invariant.
-        // if (this.children.size() > this.M) {
-        // throw new GeneralException("Node overflow");
-        // }
-    }
-
-    /**
-     * Returns how many children has this node.
-     *
-     * @return children size.
-     */
-    public int getChildrenSize() {
-        return this.children.size();
     }
 
     /**
@@ -154,9 +161,8 @@ public class Node implements Rectangle {
      * @return a list with two nodes to replace this node.
      */
     private List<Node> split() {
-        Node[] splitResult = this.splitter.split(this.children, new Node(this.m, this.M, this.splitter),
-                new Node(this.m, this.M, this.splitter));
-        List<Node> ret = new ArrayList<Node>();
+        Node[] splitResult = this.splitter.split(this.children, this.newNode(), this.newNode());
+        List<Node> ret = new ArrayList<>();
         ret.add(splitResult[0]);
         ret.add(splitResult[1]);
         return ret;

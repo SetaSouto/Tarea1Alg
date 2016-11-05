@@ -1,16 +1,15 @@
 import java.util.List;
 
 /**
- * Every splitter that implements an heuristic must implements this.
- *
- * @author souto
+ * Interface for node splitters.
+ * They must implement one of the described split heuristics.
  */
 interface Splitter {
     /**
-     * Returns an array with the children splitted.
+     * Splits the children of a node into two different nodes.
      *
-     * @param children to bre splitted.
-     * @return two List of Nodes.
+     * @param children the children of the node to be split.
+     * @return an array containing the two resulting nodes.
      */
     Node[] split(List<Rectangle> children, Node n1, Node n2);
 }

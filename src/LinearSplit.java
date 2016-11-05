@@ -49,8 +49,8 @@ public class LinearSplit implements Splitter {
         int countRest = children.size();
 
         // Add r1 to n1 add r2 to n2:
-        n1.insertChild(r1);
-        n2.insertChild(r2);
+        n1.addChild(r1);
+        n2.addChild(r2);
 
         // Iterate over the children
         for (Rectangle child : children) {
@@ -59,15 +59,15 @@ public class LinearSplit implements Splitter {
                 if (countRest <= (m - n2.getChildrenSize())) {
                     // There are just the elements that n2 needs to keep the invariant of have at least m
                     // children
-                    n2.insertChild(child);
+                    n2.addChild(child);
                 } else {
-                    n1.insertChild(child);
+                    n1.addChild(child);
                 }
             } else {
                 if (countRest <= (m - n1.getChildrenSize())) {
-                    n1.insertChild(child);
+                    n1.addChild(child);
                 } else {
-                    n2.insertChild(child);
+                    n2.addChild(child);
                 }
             }
             // Delete the rectangle recently added:
