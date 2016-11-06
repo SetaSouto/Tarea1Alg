@@ -17,6 +17,8 @@ class NodeTest {
     private Data data4 = new Data(0, 0, -5, -5);
     // Only intersects data1 anda data2: (It's IN data1 and data2)
     private Data data5 = new Data(2, 2, 1, 1);
+    // First data in the leaf:
+    private Data dataLeaf;
 
 
     NodeTest() throws GeneralException {
@@ -26,7 +28,7 @@ class NodeTest {
         // Has only one child (leaf):
         LeafNode leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
         // Leaf has only one child
-        Data dataLeaf = new Data(1, 1, 0, 0);
+        this.dataLeaf = new Data(1, 1, 0, 0);
         leaf.insert(dataLeaf);
         this.node.addChild(leaf);
     }
@@ -51,28 +53,21 @@ class NodeTest {
          * The data in the leaf intersects with data1, so if we search for data1 we must receive a
          * list with the data in the leaf.
          */
-        list.add(new Data(1, 1, 0, 0));
-        assertTrue(checkDataList(list, node.search(data1)));
-    }
+        list.add(dataLeaf);
+        assertEquals(list, node.search(data1));
 
-    /**
-     * Check if two List<Data> has the same elements in the same order.
-     *
-     * @param expected list.
-     * @param actual   list.
-     * @return true it he two list has the same elements in the same order.
-     */
-    boolean checkDataList(List<Data> expected, List<Data> actual) {
-        if (expected.size() != actual.size()) return false;
-        Data data1, data2;
-        for (int i = 0; i < expected.size(); i++) {
-            data1 = expected.get(i);
-            data2 = actual.get(i);
-            if (!data1.equals(data2)) {
-                return false;
-            }
-        }
-        return true;
+        // Add the data:
+        this.node.insert(data1);
+        this.node.insert(data2);
+        this.node.insert(data3);
+        this.node.insert(data4);
+        // Now there are 5 Data in the leaf, we don't have overflow.
+
+        // Rectangle that only intersects data1, data2 and the data in the leaf -> data5:
+        // The original leaf's data is already in the list.
+        list.add(data1);
+        list.add(data2);
+        assertEquals(list, node.search(data5));
     }
 
     /**
