@@ -50,13 +50,15 @@ class NodeTest {
         // Nothing added yet, only the data in the child:
         list.add(new Data(1, 1, 0, 0));
         assertEquals(list, node.search(data1));
-        // Add data:
+
+        // Add the data:
         this.node.insert(data1);
         this.node.insert(data2);
         this.node.insert(data3);
         this.node.insert(data4);
+        // Now there are 5 Data in the leaf, we don't have overflow.
 
-        // Rectangle that only intersects data1 and data2:
+        // Rectangle that only intersects data1 and data2 -> data5:
         list.add(data1);
         list.add(data2);
         assertEquals(list, node.search(data5));
@@ -91,10 +93,19 @@ class NodeTest {
         assertEquals(1, this.node.getChildrenSize());
     }
 
+    /**
+     * Node has only one child, a leaf. Now we added a new child, another leaf. It must have two
+     * children now.
+     */
     @Test
-    void insertChild() {
-        this.node.addChild(new Node(this.m, this.M, new LinearSplit(this.m, this.M)));
-        assertEquals(1, this.node.getChildrenSize());
+    void addChild() throws GeneralException {
+        LeafNode newChild = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
+        // We need to insert any data to have at least one rectangle
+        newChild.insert(data5);
+        // Add the new child
+        this.node.addChild(newChild);
+        // Now the node must have 2 children
+        assertEquals(2, this.node.getChildrenSize());
     }
 
 }
