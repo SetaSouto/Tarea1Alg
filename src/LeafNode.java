@@ -29,4 +29,9 @@ public class LeafNode extends Node {
         this.refreshMBR();
         return true;
     }
+
+    @Override
+    public int[] usage() {
+        return new int[]{this.getChildrenSize(), this.M};
+    }
 }
