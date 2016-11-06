@@ -61,7 +61,7 @@ public class RTree {
      * @return the number of Rectangle elements.
      */
     public int rectangleCount() {
-        return this.root.usage()[0];
+        return this.root.rectangleCount();
     }
 
     /**
