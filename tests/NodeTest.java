@@ -143,6 +143,17 @@ class NodeTest {
     }
 
     /**
+     * First we only have one data in the leaf, there are 3 rectangles. When we
+     * insert all the data (5 more data) we'll have 9 rectangles (1 node, 2 leaf and 6 data).
+     */
+    @Test
+    void rectangleCountTest() throws GeneralException {
+        assertEquals(3, this.node.rectangleCount());
+        insertAllData();
+        assertEquals(9, this.node.rectangleCount());
+    }
+
+    /**
      * Inserts all the data available in this class.
      */
     private void insertAllData() throws GeneralException {
