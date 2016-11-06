@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -27,25 +26,29 @@ class NodeTest {
         // Has only one child (leaf):
         LeafNode leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
         // Leaf has only one child
-        Data dataLeaf = new Data(1,1,0,0);
+        Data dataLeaf = new Data(1, 1, 0, 0);
         leaf.insert(dataLeaf);
         this.node.addChild(leaf);
     }
 
+    /**
+     * Insert all the data, the new MBR must be (10,10,-10,-10) because data1 is (10,10,0,0) and
+     * data3 is (0,0,-10,-10).
+     */
     @Test
     void getMBR() throws GeneralException {
         this.node.insert(data1);
         this.node.insert(data2);
         this.node.insert(data3);
         this.node.insert(data4);
-        assertEquals(new Data(10, 10, -10, -10), node.getMBR());
+        assertTrue(new Data(10, 10, -10, -10).equals(node.getMBR()));
     }
 
     @Test
     void search() throws GeneralException {
         List<Data> list = new ArrayList<>();
         // Nothing added yet, only the data in the child:
-        list.add(new Data(1,1,0,0));
+        list.add(new Data(1, 1, 0, 0));
         assertEquals(list, node.search(data1));
         // Add data:
         this.node.insert(data1);
