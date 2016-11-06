@@ -47,23 +47,39 @@ class NodeTest {
     @Test
     void search() throws GeneralException {
         List<Data> list = new ArrayList<>();
-        // Nothing added yet, only the data in the child:
+        /* Nothing added yet, only the data in the child.
+         * The data in the leaf intersects with data1, so if we search for data1 we must receive a
+         * list with the data in the leaf.
+         */
         list.add(new Data(1, 1, 0, 0));
-        assertEquals(list, node.search(data1));
-
-        // Add the data:
-        this.node.insert(data1);
-        this.node.insert(data2);
-        this.node.insert(data3);
-        this.node.insert(data4);
-        // Now there are 5 Data in the leaf, we don't have overflow.
-
-        // Rectangle that only intersects data1 and data2 -> data5:
-        list.add(data1);
-        list.add(data2);
-        assertEquals(list, node.search(data5));
+        assertTrue(checkDataList(list, node.search(data1)));
     }
 
+    /**
+     * Check if two List<Data> has the same elements in the same order.
+     *
+     * @param expected list.
+     * @param actual   list.
+     * @return true it he two list has the same elements in the same order.
+     */
+    boolean checkDataList(List<Data> expected, List<Data> actual) {
+        if (expected.size() != actual.size()) return false;
+        Data data1, data2;
+        for (int i = 0; i < expected.size(); i++) {
+            data1 = expected.get(i);
+            data2 = actual.get(i);
+            if (!data1.equals(data2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * We'll check how much would increase the area if we add a new (11,11,0,0) rectangle. We had a
+     * 20x20 MBR, with data6 we would have a 21x21 MBR. Area must increase 41 units. In the second
+     * assert we check with a data that is IN the actual MBR, area would increase zero.
+     */
     @Test
     void deltaAreaQuery() throws GeneralException {
         // Add data
@@ -72,9 +88,9 @@ class NodeTest {
         this.node.insert(data3);
         this.node.insert(data4);
 
-        // Data that increments the MBR in 21 units
+        // Data that increments the MBR in 41 units: one more unit up, one mor unit right.
         Data data6 = new Data(11, 11, 0, 0);
-        assertEquals(21, this.node.deltaAreaQuery(data6));
+        assertEquals(41, this.node.deltaAreaQuery(data6));
 
         // This is contained in the actual MBR, area increments in zero units
         assertEquals(0, this.node.deltaAreaQuery(data5));
