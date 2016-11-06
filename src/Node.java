@@ -182,19 +182,16 @@ public class Node implements Rectangle {
     }
 
     /**
-     * Calculates total available nodes and total used nodes in the subtree that has this node as root.
+     * Determines the total number of Rectangle elements in the tree.
      *
-     * @return int pair containing the total available nodes and the total used nodes.
+     * @return the number of Rectangles.
      */
-    public int[] usage() {
-        int used = this.getChildrenSize();
-        int available = this.M;
+    public int rectangleCount() {
+        int count = this.getChildrenSize();
         for (Rectangle child : this.children) {
-            int[] usage = ((Node)child).usage();
-            used += usage[0];
-            available += usage[1];
+            count += ((Node)child).rectangleCount();
         }
-        return new int[]{used, available};
+        return count;
     }
 
     /**

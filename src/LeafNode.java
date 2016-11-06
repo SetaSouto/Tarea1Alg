@@ -31,8 +31,8 @@ public class LeafNode extends Node {
     }
 
     @Override
-    public int[] usage() {
-        return new int[]{this.getChildrenSize(), this.M};
+    public int rectangleCount() {
+        return this.getChildrenSize();
     }
 
     @Override

@@ -60,8 +60,8 @@ public class RTree {
      * Determines the total number of Rectangle elements in the tree.
      * @return the number of Rectangle elements.
      */
-    public int treeSize() {
-        return this.root.usage()[0];
+    public int rectangleCount() {
+        return this.root.rectangleCount();
     }
 
     /**
@@ -86,7 +86,6 @@ public class RTree {
      * @return the used reference percentage.
      */
     public double usagePercentage() {
-        int[] usage = this.root.usage();
-        return 1.0 * usage[1] / usage[0];
+        return 1.0 * (this.rectangleCount() - 1) / (this.M * this.nodeCount());  // -1 in order to ignore de root
     }
 }

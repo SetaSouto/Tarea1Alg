@@ -10,8 +10,6 @@ import java.util.stream.IntStream;
  * System properties 2: RAM:
  *                      HD:
  *                      OS:
- *
- * Created by fcocl_000 on 2016-11-06.
  */
 public class Experiment {
     private static int M = 4096;            // set to allocation unit size
