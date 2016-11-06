@@ -6,7 +6,7 @@ import java.util.List;
  *
  * Created by souto on 06-11-2016.
  */
-public class Rtree {
+public class RTree {
     private int m, M;
     private Splitter splitter;
     private Node root;
@@ -18,7 +18,7 @@ public class Rtree {
      * @param M        maximum size of a Node.
      * @param splitter contains split's heuristic to control overflow.
      */
-    public Rtree(int m, int M, Splitter splitter) {
+    public RTree(int m, int M, Splitter splitter) {
         this.m = m;
         this.M = M;
         this.splitter = splitter;
@@ -54,5 +54,39 @@ public class Rtree {
      */
     public List<Data> search(Data C) {
         return this.root.search(C);
+    }
+
+    /**
+     * Determines the total number of Rectangle elements in the tree.
+     * @return the number of Rectangle elements.
+     */
+    public int treeSize() {
+        return this.root.usage()[0];
+    }
+
+    /**
+     * Determines the total number of Node elements in the tree.
+     * @return the number if Node elements.
+     */
+    public int nodeCount() {
+        return this.root.nodeCount();
+    }
+
+    /**
+     * Determines the height of the tree.
+     * @return the height of the tree.
+     * @throws GeneralException if a node's children have different heights.
+     */
+    public int height() throws GeneralException {
+        return this.root.height();
+    }
+
+    /**
+     * Determines the percentage of the total possible element references that are actually used.
+     * @return the used reference percentage.
+     */
+    public double usagePercentage() {
+        int[] usage = this.root.usage();
+        return 1.0 * usage[1] / usage[0];
     }
 }

@@ -222,6 +222,6 @@ public class Node implements Rectangle {
                 throw new GeneralException("Children with different heights");
             }
         }
-        return 1 + childHeight; // as nodes must maintain the |children| >= m invariant, maxHeight should be > 0
+        return 1 + childHeight; // as nodes must maintain the |children| >= m invariant, childHeight should be > 0
     }
 }
