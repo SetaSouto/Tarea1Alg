@@ -187,11 +187,11 @@ public class Node implements Rectangle {
      * @return the number of Rectangles.
      */
     public int rectangleCount() {
-        int count = this.getChildrenSize();
+        int count = 1; // Itself
         for (Rectangle child : this.children) {
             count += ((Node) child).rectangleCount();
         }
-        return count + 1;
+        return count;
     }
 
     /**
@@ -230,8 +230,7 @@ public class Node implements Rectangle {
     public int dataCount() {
         int count = 0; // Node does not have data.
         for(Rectangle child : this.children) {
-            Node node = (Node) child;
-            count += node.dataCount();
+            count += ((Node) child).dataCount();
         }
         return count;
     }

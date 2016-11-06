@@ -154,6 +154,17 @@ class NodeTest {
     }
 
     /**
+     * With the only data in the leaf there is one data rectangle. When we insert all data (5 data
+     * rectangles) there must be 6 data rectnagles.
+     */
+    @Test
+    void dataCountTest() throws GeneralException {
+        assertEquals(1, this.node.dataCount());
+        insertAllData();
+        assertEquals(6, this.node.dataCount());
+    }
+
+    /**
      * Inserts all the data available in this class.
      */
     private void insertAllData() throws GeneralException {

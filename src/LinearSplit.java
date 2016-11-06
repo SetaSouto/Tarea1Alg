@@ -57,7 +57,7 @@ public class LinearSplit implements Splitter {
         }
 
         if (n1.getChildrenSize() < m || n2.getChildrenSize() < m) {
-            System.out.println("ERROR: Invariant m broken.");
+            throw new Error("Invariant m broken.");
         }
 
         return new Node[]{n1, n2};
