@@ -147,7 +147,7 @@ public class Node implements Rectangle {
      * @param newNodes nodes to be inserted.
      * @throws GeneralException in case of this node's size is over M after insertion.
      */
-    private void addChildren(List<? extends Node> newNodes) throws GeneralException {
+    void addChildren(List<Rectangle> newNodes) throws GeneralException {
         this.children.addAll(newNodes);
         if (this.children.size() > this.M) {
             throw new GeneralException("addChildren: node overflow");
@@ -160,9 +160,9 @@ public class Node implements Rectangle {
      *
      * @return a list with two nodes to replace this node.
      */
-    private List<Node> split() {
+    private List<Rectangle> split() {
         Node[] splitResult = this.splitter.split(this.children, this.newNode(), this.newNode());
-        List<Node> ret = new ArrayList<>();
+        List<Rectangle> ret = new ArrayList<>();
         ret.add(splitResult[0]);
         ret.add(splitResult[1]);
         return ret;

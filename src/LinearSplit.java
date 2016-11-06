@@ -1,7 +1,7 @@
 import java.util.List;
 
 /**
- * Implements LinearSplit hueristic.
+ * Implements LinearSplit heuristic.
  *
  * @author souto
  */
@@ -21,36 +21,18 @@ public class LinearSplit implements Splitter {
 
     @Override
     public Node[] split(List<Rectangle> children, Node n1, Node n2) {
-        Rectangle[] pairX = this.getPairX(children);
-        Rectangle[] pairY = this.getPairY(children);
-        // (max xL - min xR)/(range X):
-        double distXNorm =
-                (pairX[0].getMBR().getLeft() - pairX[1].getMBR().getRight()) / (this.getRangeX(children));
-        // (max yB - min yT)/(range Y):
-        double distYNorm =
-                (pairY[0].getMBR().getBottom() - pairY[1].getMBR().getTop()) / (this.getRangeY(children));
-
-        // Select the pair with the biggest distance.
-        Rectangle r1;
-        Rectangle r2;
-        if (distXNorm > distYNorm) {
-            r1 = pairX[0];
-            r2 = pairY[1];
-        } else {
-            r1 = pairY[0];
-            r2 = pairY[1];
-        }
+        Rectangle[] startingPair = this.mostSeparated(children);
 
         // Delete the pair from children:
-        children.remove(r1);
-        children.remove(r2);
+        children.remove(startingPair[0]);
+        children.remove(startingPair[1]);
 
         // How many rectangles are:
         int countRest = children.size();
 
         // Add r1 to n1 add r2 to n2:
-        n1.addChild(r1);
-        n2.addChild(r2);
+        n1.addChild(startingPair[0]);
+        n2.addChild(startingPair[1]);
 
         // Iterate over the children
         for (Rectangle child : children) {
@@ -76,20 +58,31 @@ public class LinearSplit implements Splitter {
 
         if (n1.getChildrenSize() < m || n2.getChildrenSize() < m) {
             System.out.println("ERROR: Invariant m broken.");
-            ;
         }
 
-        Node[] ret = {n1, n2};
-        return ret;
+        return new Node[]{n1, n2};
+    }
+
+    private Rectangle[] mostSeparated(List<Rectangle> children) {
+        Rectangle[] pairX = this.getPairX(children);
+        Rectangle[] pairY = this.getPairY(children);
+        // (max xL - min xR)/(range X):
+        double distXNorm =
+                (pairX[0].getMBR().getLeft() - pairX[1].getMBR().getRight()) / (this.getRangeX(children));
+        // (max yB - min yT)/(range Y):
+        double distYNorm =
+                (pairY[0].getMBR().getBottom() - pairY[1].getMBR().getTop()) / (this.getRangeY(children));
+
+        return distXNorm > distYNorm ? pairX : pairY;
     }
 
     /**
-     * Returns two rectangles that are fardest away of each other in X.
+     * Returns two rectangles that are furthest away of each other in X.
      *
      * @param children list with the rectangles.
      * @return two rectangles, first is with the max xL, second is with the minimum xR
      */
-    private Rectangle[] getPairX(List<Rectangle> children) {
+    Rectangle[] getPairX(List<Rectangle> children) {
         double max_xL = Double.MIN_VALUE;
         double min_xR = Double.MAX_VALUE;
         Rectangle r1 = null;
@@ -106,17 +99,16 @@ public class LinearSplit implements Splitter {
                 r2 = child;
             }
         }
-        Rectangle[] ret = {r1, r2};
-        return ret;
+        return new Rectangle[]{r1, r2};
     }
 
     /**
-     * Return two rectangles that are fardest away of each other in Y.
+     * Return two rectangles that are furthest away of each other in Y.
      *
      * @param children list with rectangles.
      * @return two rectangles, first is with the maximum yB, second is with the minimum yT
      */
-    private Rectangle[] getPairY(List<Rectangle> children) {
+    Rectangle[] getPairY(List<Rectangle> children) {
         double max_yB = Double.MIN_VALUE;
         double min_yT = Double.MAX_VALUE;
         Rectangle r1 = null;
@@ -133,8 +125,7 @@ public class LinearSplit implements Splitter {
                 r2 = child;
             }
         }
-        Rectangle[] ret = {r1, r2};
-        return ret;
+        return new Rectangle[]{r1, r2};
     }
 
     /**
@@ -143,7 +134,7 @@ public class LinearSplit implements Splitter {
      * @param children list with the rectangles.
      * @return range in X.
      */
-    private double getRangeX(List<Rectangle> children) {
+    double getRangeX(List<Rectangle> children) {
         double max_xR = Double.MIN_VALUE;
         double min_xL = Double.MAX_VALUE;
         for (Rectangle child : children) {
@@ -159,7 +150,7 @@ public class LinearSplit implements Splitter {
      * @param children list with rectangles.
      * @return range in Y.
      */
-    private double getRangeY(List<Rectangle> children) {
+    double getRangeY(List<Rectangle> children) {
         double max_yT = Double.MIN_VALUE;
         double min_yB = Double.MAX_VALUE;
         for (Rectangle child : children) {
@@ -168,5 +159,4 @@ public class LinearSplit implements Splitter {
         }
         return max_yT - min_yB;
     }
-
 }
