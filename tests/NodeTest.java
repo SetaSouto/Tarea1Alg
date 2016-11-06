@@ -25,11 +25,11 @@ class NodeTest {
         this.M = 5;
         this.node = new Node(m, M, new LinearSplit(m, M));
         // Has only one child (leaf):
-        NodeLeaf leaf = new NodeLeaf(this.m, this.M, new LinearSplit(this.m, this.M));
+        LeafNode leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
         // Leaf has only one child
         Data dataLeaf = new Data(1,1,0,0);
         leaf.insert(dataLeaf);
-        this.node.insertChild(leaf);
+        this.node.addChild(leaf);
     }
 
     @Test
@@ -90,7 +90,7 @@ class NodeTest {
 
     @Test
     void insertChild() {
-        this.node.insertChild(new Node(this.m, this.M, new LinearSplit(this.m, this.M)));
+        this.node.addChild(new Node(this.m, this.M, new LinearSplit(this.m, this.M)));
         assertEquals(1, this.node.getChildrenSize());
     }
 
