@@ -191,7 +191,7 @@ public class Node implements Rectangle {
         for (Rectangle child : this.children) {
             count += ((Node)child).rectangleCount();
         }
-        return count;
+        return count + 1;
     }
 
     /**
