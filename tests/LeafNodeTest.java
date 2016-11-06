@@ -54,4 +54,20 @@ class LeafNodeTest {
         assertTrue(data2.equals(this.leaf.getMBR()));
     }
 
+    /**
+     * A leaf is only one node, must be one always.
+     */
+    @Test
+    void nodeCountTest() {
+        assertEquals(1, this.leaf.nodeCount());
+    }
+
+    /**
+     * The height of a leaf must be always zero.
+     */
+    @Test
+    void heightTest() {
+        assertEquals(0, this.leaf.height());
+    }
+
 }

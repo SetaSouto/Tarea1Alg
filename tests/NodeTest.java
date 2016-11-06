@@ -119,4 +119,38 @@ class NodeTest {
         assertEquals(2, this.node.getChildrenSize());
     }
 
+    /**
+     * Insert 5 data, plus the leaf's data we have 6 data, so with the M=3 que must have 3 nodes.
+     */
+    @Test
+    void nodeCountTest() throws GeneralException {
+        // First is the node with one leaf:
+        assertEquals(2, this.node.nodeCount());
+        // Insert data:
+        insertAllData();
+        // Overflow. Now we have two leafs:
+        assertEquals(3, this.node.nodeCount());
+    }
+
+    /**
+     * With only one leaf it must have height 1. Wit all the data inserted must still be 1.
+     */
+    @Test
+    void heightTest() throws GeneralException {
+        assertEquals(1, this.node.height());
+        insertAllData();
+        assertEquals(1, this.node.height());
+    }
+
+    /**
+     * Inserts all the data available in this class.
+     */
+    private void insertAllData() throws GeneralException {
+        this.node.insert(data1);
+        this.node.insert(data2);
+        this.node.insert(data3);
+        this.node.insert(data4);
+        this.node.insert(data5);
+    }
+
 }
