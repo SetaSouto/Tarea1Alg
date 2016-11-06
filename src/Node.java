@@ -50,6 +50,7 @@ public class Node implements Rectangle {
 
     /**
      * Creates a "cloned" node with the same parameters.
+     *
      * @return a new Node object set with the same parameters.
      */
     public Node newNode() {
@@ -108,17 +109,9 @@ public class Node implements Rectangle {
      */
     public boolean insert(Data C) throws GeneralException {
         // Data must be inserted in the sub-tree who's area increases the least.
-        Node minNode = null;
-        double min = Double.MAX_VALUE;
-        // Find insert point.
-        for (Rectangle element : this.children) {
-            Node child = (Node) element;
-            if (child.deltaAreaQuery(C) < min) {
-                min = child.deltaAreaQuery(C);
-                minNode = child;
-            }
-        }
-        // cond will be false when an successive node's children is empty. This should not happen.
+        Node minNode = findInsertChild(C);
+
+        // cond will be false when a successive node's children is empty. This should not happen.
         boolean cond;
         try {
             cond = minNode.insert(C);
@@ -128,11 +121,31 @@ public class Node implements Rectangle {
             cond = true;
         }
         this.refreshMBR();
-        return min != Double.MAX_VALUE && cond;
+        return minNode != null && cond;
     }
 
     /**
-     * Adds a new child node. Must only be called by a splitter, as it might otherwise cause a node overflow.
+     * Data must be inserted in the sub-tree who's area increases the least. If it is the case that
+     * there are more than one, it is chosen who has the minimum area of them.
+     */
+    private Node findInsertChild(Data C) {
+        Node minNode = null;
+        double min = Double.MAX_VALUE;
+        for (Rectangle element : this.children) {
+            Node child = (Node) element;
+            if (child.deltaAreaQuery(C) < min) {
+                min = child.deltaAreaQuery(C);
+                minNode = child;
+            } else if (child.deltaAreaQuery(C) == min && (child.getMBR().getArea() < minNode.getMBR().getArea())) {
+                minNode = child;
+            }
+        }
+        return minNode;
+    }
+
+    /**
+     * Adds a new child node. Must only be called by a splitter, as it might otherwise cause a node
+     * overflow.
      *
      * @param child to be inserted.
      */
@@ -160,7 +173,7 @@ public class Node implements Rectangle {
      *
      * @return a list with two nodes to replace this node.
      */
-    private List<Rectangle> split() {
+    protected List<Rectangle> split() {
         Node[] splitResult = this.splitter.split(this.children, this.newNode(), this.newNode());
         List<Rectangle> ret = new ArrayList<>();
         ret.add(splitResult[0]);
