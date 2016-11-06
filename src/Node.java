@@ -189,7 +189,7 @@ public class Node implements Rectangle {
     public int rectangleCount() {
         int count = this.getChildrenSize();
         for (Rectangle child : this.children) {
-            count += ((Node)child).rectangleCount();
+            count += ((Node) child).rectangleCount();
         }
         return count + 1;
     }
@@ -202,7 +202,7 @@ public class Node implements Rectangle {
     public int nodeCount() {
         int count = 1; // starts with 1 to count itself
         for (Rectangle child : this.children) {
-            count += ((Node)child).nodeCount();
+            count += ((Node) child).nodeCount();
         }
         return count;
     }
@@ -213,12 +213,26 @@ public class Node implements Rectangle {
      * @return the node's height.
      */
     public int height() throws GeneralException {
-        int childHeight = ((Node)this.children.get(0)).height();
+        int childHeight = ((Node) this.children.get(0)).height();
         for (Rectangle child : this.children) {
-            if (((Node)child).height() != childHeight) {
+            if (((Node) child).height() != childHeight) {
                 throw new GeneralException("Children with different heights");
             }
         }
         return 1 + childHeight; // as nodes must maintain the |children| >= m invariant, childHeight should be > 0
+    }
+
+    /**
+     * Determines the total data rectangles that are in its sub-tree.
+     *
+     * @return the number of data rectangles in this sub-tree.
+     */
+    public int dataCount() {
+        int count = 0; // Node does not have data.
+        for(Rectangle child : this.children) {
+            Node node = (Node) child;
+            count += node.dataCount();
+        }
+        return count;
     }
 }

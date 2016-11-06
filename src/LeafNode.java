@@ -32,6 +32,11 @@ public class LeafNode extends Node {
 
     @Override
     public int rectangleCount() {
+        return this.getChildrenSize() + 1;
+    }
+
+    @Override
+    public int dataCount() {
         return this.getChildrenSize();
     }
 
