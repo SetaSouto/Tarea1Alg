@@ -34,4 +34,14 @@ public class LeafNode extends Node {
     public int[] usage() {
         return new int[]{this.getChildrenSize(), this.M};
     }
+
+    @Override
+    public int nodeCount() {
+        return 1;
+    }
+
+    @Override
+    public int height() {
+        return 0;
+    }
 }

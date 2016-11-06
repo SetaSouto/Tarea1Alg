@@ -196,4 +196,32 @@ public class Node implements Rectangle {
         }
         return new int[]{used, available};
     }
+
+    /**
+     * Determines the number of Node objects in the subtree that has this node as root.
+     *
+     * @return the total number of nodes in the subtree.
+     */
+    public int nodeCount() {
+        int count = 1; // starts with 1 to count itself
+        for (Rectangle child : this.children) {
+            count += ((Node)child).nodeCount();
+        }
+        return count;
+    }
+
+    /**
+     * Determines the height of the node.
+     *
+     * @return the node's height.
+     */
+    public int height() throws GeneralException {
+        int childHeight = ((Node)this.children.get(0)).height();
+        for (Rectangle child : this.children) {
+            if (((Node)child).height() != childHeight) {
+                throw new GeneralException("Children with different heights");
+            }
+        }
+        return 1 + childHeight; // as nodes must maintain the |children| >= m invariant, maxHeight should be > 0
+    }
 }
