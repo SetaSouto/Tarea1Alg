@@ -4,7 +4,7 @@ import java.util.List;
 /**
  * Implementation of an R-Tree Node.
  */
-public class Node implements Rectangle {
+public class Node implements Rectangle, java.io.Serializable {
     protected int m, M;
     private Data MBR; // Minimum Bounding Rect of the node's childrenPaths.
     protected Splitter splitter;

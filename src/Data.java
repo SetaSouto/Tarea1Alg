@@ -6,7 +6,7 @@ import java.util.List;
  *
  * @author souto
  */
-public class Data implements Rectangle {
+public class Data implements Rectangle, java.io.Serializable {
     private double xL, xR, yT, yD; // xLeft, xRight, yTop, yDown.
     private String path;
 
