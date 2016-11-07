@@ -29,6 +29,11 @@ public class LeafNode extends Node {
     }
 
     @Override
+    public int accessCountSearch(Data C) {
+        return 1;
+    }
+
+    @Override
     public int rectangleCount() {
         return this.getChildrenSize() + 1;
     }

@@ -34,9 +34,18 @@ public class Node implements Rectangle {
     public List<Data> search(Data C) {
         List<Data> ret = new ArrayList<>();
         for (Rectangle child : this.children) {
-            ret.addAll(child.search(C));
+            if (child.getMBR().intersect(this.getMBR())) ret.addAll(child.search(C));
         }
         return ret;
+    }
+
+    @Override
+    public int accessCountSearch(Data C) {
+        int count = 1;
+        for (Rectangle child : this.children) {
+            if (child.getMBR().intersect(this.getMBR())) count += child.accessCountSearch(C);
+        }
+        return count;
     }
 
     /**

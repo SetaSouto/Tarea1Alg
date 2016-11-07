@@ -73,11 +73,11 @@ public class Experiment {
      * @throws GeneralException raised when a Data with no dimensions is inserted.
      */
     private RTree generateTree(Data[] data, Splitter splitter) throws GeneralException {
-        Node root = new Node(m, M, splitter);
+        RTree tree = new RTree(m, M, splitter);
         for (Data d : data) {
-            root.insert(d);
+            tree.insert(d);
         }
-        return root;
+        return tree;
     }
 
     /**

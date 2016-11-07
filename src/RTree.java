@@ -49,11 +49,20 @@ public class RTree {
     /**
      * Returns all rectangles that intersect with C.
      *
-     * @param C rectangle to use in the search.
+     * @param C rectangle to be used in the search.
      * @return a list with all the data (rectangles) that intersect with C.
      */
     public List<Data> search(Data C) {
         return this.root.search(C);
+    }
+
+    /**
+     * Counts the number of nodes visited while performing a Search for the given data.
+     * @param C rectangle to be used in the search.
+     * @return the number of nodes visited.
+     */
+    public int accessCountSearch(Data C) {
+        return this.root.accessCountSearch(C);
     }
 
     /**
