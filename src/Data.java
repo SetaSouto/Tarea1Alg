@@ -41,6 +41,11 @@ public class Data implements Rectangle {
         return ret;
     }
 
+    @Override
+    public int accessCountSearch(Data C) {
+        return 0;
+    }
+
     /**
      * Returns the value of the left side.
      *

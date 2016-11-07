@@ -1,5 +1,4 @@
 import java.util.Random;
-import java.util.stream.IntStream;
 
 /**
  * Experiment framework class.
@@ -32,17 +31,38 @@ public class Experiment {
 
         // Measure tree creation times
         long startTime = System.currentTimeMillis();
-        Node linearTree = generateTree(randomDataset, new LinearSplit(m, M));
+        RTree linearTree = generateTree(randomDataset, new LinearSplit(m, M));
         long stopTime = System.currentTimeMillis();
         System.out.println("Linear split creation time: " + (startTime - stopTime) + " ms.");
 
         startTime = System.currentTimeMillis();
-        Node greeneTree = generateTree(randomDataset, new GreeneSplit(m, M));
+        RTree greeneTree = generateTree(randomDataset, new GreeneSplit(m, M));
         stopTime = System.currentTimeMillis();
         System.out.println("Greene split creation time: " + (startTime - stopTime) + " ms.");
 
-        // Measure search performance
+        // Measure usage percentage
+        System.out.println("Linear split usage percentage: " + linearTree.usagePercentage());
 
+        System.out.println("Greene split usage percentage: " + greeneTree.usagePercentage());
+
+        // Measure search performance
+        int discAccesses = 0;
+        startTime = System.currentTimeMillis();
+        for (Data data : queries) {
+            linearTree.search(data);
+        }
+        stopTime = System.currentTimeMillis();
+        System.out.println("Linear split queries time: " + (startTime - stopTime) + " ms");
+        System.out.println("Linear split number of accesses: " + discAccesses);
+
+        discAccesses = 0;
+        startTime = System.currentTimeMillis();
+        for (Data data : queries) {
+            linearTree.search(data);
+        }
+        stopTime = System.currentTimeMillis();
+        System.out.println("Greene split queries time: " + (startTime - stopTime) + " ms");
+        System.out.println("Greene split number of accesses: " + discAccesses);
     }
 
     /**
@@ -52,12 +72,12 @@ public class Experiment {
      * @return the root of the resulting tree.
      * @throws GeneralException raised when a Data with no dimensions is inserted.
      */
-    private Node generateTree(Data[] data, Splitter splitter) throws GeneralException {
-        Node root = new Node(m, M, splitter);
+    private RTree generateTree(Data[] data, Splitter splitter) throws GeneralException {
+        RTree tree = new RTree(m, M, splitter);
         for (Data d : data) {
-            root.insert(d);
+            tree.insert(d);
         }
-        return root;
+        return tree;
     }
 
     /**
