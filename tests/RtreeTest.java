@@ -7,40 +7,43 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by souto on 06-11-2016.
  */
 class RtreeTest {
-    RTree tree;
+    RTree treeLinear;
+    RTree treeGreen;
 
     @BeforeEach
     void setUp() {
         int m = 3, M = 6;
-        this.tree = new RTree(m, M, new LinearSplit(m, M));
+        this.treeLinear = new RTree(m, M, new LinearSplit(m, M));
+        this.treeGreen = new RTree(m, M, new GreeneSplit(m, M));
     }
 
     /**
-     * Add only one Data, there are two rectangles in the tree, the MBR of the root and the data.
+     * Add only one Data, there are two rectangles in the treeLinear, the MBR of the root and the
+     * data.
      */
     @Test
-    void insertTest1() throws GeneralException {
-        this.tree.insert(sampleData());
-        assertEquals(2, this.tree.rectangleCount());
+    void insertLinearTest1() throws GeneralException {
+        this.treeLinear.insert(sampleData());
+        assertEquals(2, this.treeLinear.rectangleCount());
     }
 
     /**
-     * Insert 5 data in the tree, how M=6 there are 6 rectangles in the tree (5 data and the MBR of
-     * the root).
+     * Insert 5 data in the treeLinear, how M=6 there are 6 rectangles in the treeLinear (5 data and
+     * the MBR of the root).
      */
     @Test
-    void insertTest5() throws GeneralException {
-        insertBash(5);
-        assertEquals(6, this.tree.rectangleCount());
+    void insertLinearTest5() throws GeneralException {
+        insertBash(5, this.treeLinear);
+        assertEquals(6, this.treeLinear.rectangleCount());
     }
 
     /**
-     * Insert 10 data in the tree.
+     * Insert 10 data in the treeLinear.
      */
     @Test
-    void insert10() throws GeneralException {
-        insertBash(10);
-        assertEquals(10, this.tree.dataCount());
+    void insertLinearTest10() throws GeneralException {
+        insertBash(10, this.treeLinear);
+        assertEquals(10, this.treeLinear.dataCount());
     }
 
     /**
@@ -48,18 +51,54 @@ class RtreeTest {
      */
     @Test
     void insert1000000() throws GeneralException {
-        insertBash(1000000);
-        assertEquals(1000000, this.tree.dataCount());
+        insertBash(1000000, this.treeLinear);
+        assertEquals(1000000, this.treeLinear.dataCount());
+
+        insertBash(1000000, this.treeGreen);
+        assertEquals(1000000, this.treeGreen.dataCount());
+
+    }
+
+    @Test
+    void height() throws GeneralException {
+        // With no data, has no height.
+        assertEquals(0, this.treeLinear.height());
+        assertEquals(0, this.treeGreen.height());
+
+        // Insert 5 elements, has height zero, es only one leaf
+        insertBash(5, this.treeLinear);
+        insertBash(5, this.treeGreen);
+        assertEquals(0, this.treeLinear.height());
+        assertEquals(0, this.treeGreen.height());
+
+        // Insert 2 more elements, force to do split (M=6) and now it must have height 1
+        insertBash(2, this.treeLinear);
+        insertBash(2, this.treeGreen);
+        assertEquals(1, this.treeGreen.height());
+        assertEquals(1, this.treeLinear.height());
+
+        // We have 7 elements, we force the root to do split by inserting 30 more elements.
+        // Total elements in the tree: 37
+        insertBash(30, this.treeLinear);
+        insertBash(30, this.treeGreen);
+        assertEquals(2, this.treeLinear.height());
+        assertEquals(2, this.treeGreen.height());
+
+        // Now we force to have height 3 by adding 200 data. Total Elements in the tree: 237
+        insertBash(200, this.treeLinear);
+        insertBash(200, this.treeGreen);
+        assertEquals(3, this.treeLinear.height());
+        assertEquals(3, this.treeGreen.height());
     }
 
     /**
-     * Insert n randomnly data rectangles in the tree.
+     * Insert n randomnly data rectangles in the treeLinear.
      *
-     * @param n number of rectangles to be inserted in the tree.
+     * @param n number of rectangles to be inserted in the treeLinear.
      */
-    private void insertBash(int n) throws GeneralException {
+    private void insertBash(int n, RTree tree) throws GeneralException {
         for (int i = 0; i < n; i++) {
-            this.tree.insert(sampleData());
+            tree.insert(sampleData());
         }
     }
 

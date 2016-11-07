@@ -212,11 +212,11 @@ public class Node implements Rectangle {
      *
      * @return the node's height.
      */
-    public int height() throws GeneralException {
+    public int height() {
         int childHeight = ((Node) this.children.get(0)).height();
         for (Rectangle child : this.children) {
             if (((Node) child).height() != childHeight) {
-                throw new GeneralException("Children with different heights");
+                throw new Error("Children with different heights");
             }
         }
         return 1 + childHeight; // as nodes must maintain the |children| >= m invariant, childHeight should be > 0

@@ -89,7 +89,7 @@ public class RTree {
      * @return the height of the tree.
      * @throws GeneralException if a node's children have different heights.
      */
-    public int height() throws GeneralException {
+    public int height() {
         return this.root.height();
     }
 
