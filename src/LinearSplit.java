@@ -21,6 +21,8 @@ public class LinearSplit implements Splitter {
 
     @Override
     public Node[] split(List<Rectangle> children, Node n1, Node n2) {
+        int initChildrenSize = children.size(); // To check errors.
+
         Rectangle[] startingPair = this.mostSeparated(children);
 
         // Delete the pair from children:
@@ -58,6 +60,9 @@ public class LinearSplit implements Splitter {
 
         if (n1.getChildrenSize() < m || n2.getChildrenSize() < m) {
             throw new Error("Invariant m broken.");
+        }
+        if ((n1.getChildrenSize() + n2.getChildrenSize()) != initChildrenSize) {
+            throw new Error("There are more children than in the beginning.");
         }
 
         return new Node[]{n1, n2};
