@@ -12,7 +12,7 @@ class RtreeTest {
     @BeforeEach
     void setUp() {
         int m = 3, M = 6;
-        this.tree = new RTree(3, 6, new LinearSplit(3, 6));
+        this.tree = new RTree(m, M, new LinearSplit(m, M));
     }
 
     /**
@@ -44,12 +44,12 @@ class RtreeTest {
     }
 
     /**
-     * Insert 100 data rectangles. There must be 100 data in the tree.
-     * @throws GeneralException
+     * Insert 1M data rectangles. There must be 1M data in the tree.
      */
-    @Test void insert100() throws GeneralException {
-        insertBash(100);
-        assertEquals(100, this.tree.dataCount());
+    @Test
+    void insert1000000() throws GeneralException {
+        insertBash(1000000);
+        assertEquals(1000000, this.tree.dataCount());
     }
 
     /**

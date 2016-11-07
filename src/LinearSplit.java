@@ -25,9 +25,20 @@ public class LinearSplit implements Splitter {
 
         Rectangle[] startingPair = this.mostSeparated(children);
 
+        if (startingPair[0] == null || startingPair[1] == null) {
+            throw new Error("Starting pair null.");
+        }
+        if (startingPair[0].equals(startingPair[1])) {
+            throw new Error("Starting rectangles are the same.");
+        }
+
         // Delete the pair from children:
         children.remove(startingPair[0]);
         children.remove(startingPair[1]);
+
+        if (!(children.size() == (initChildrenSize - 2))) {
+            throw new Error("The starting pair wasn't removed.");
+        }
 
         // How many rectangles are:
         int countRest = children.size();
@@ -61,8 +72,10 @@ public class LinearSplit implements Splitter {
         if (n1.getChildrenSize() < m || n2.getChildrenSize() < m) {
             throw new Error("Invariant m broken.");
         }
-        if ((n1.getChildrenSize() + n2.getChildrenSize()) != initChildrenSize) {
+        if ((n1.getChildrenSize() + n2.getChildrenSize()) > initChildrenSize) {
             throw new Error("There are more children than in the beginning.");
+        } else if ((n1.getChildrenSize() + n2.getChildrenSize()) < initChildrenSize) {
+            throw new Error("There are less children than in the beginning.");
         }
 
         return new Node[]{n1, n2};
@@ -88,23 +101,52 @@ public class LinearSplit implements Splitter {
      * @return two rectangles, first is with the max xL, second is with the minimum xR
      */
     Rectangle[] getPairX(List<Rectangle> children) {
-        double max_xL = Double.MIN_VALUE;
-        double min_xR = Double.MAX_VALUE;
-        Rectangle r1 = null;
-        Rectangle r2 = null;
-        for (Rectangle child : children) {
-            // If its left side if at the right of max_xL
-            if (child.getMBR().getLeft() > max_xL) {
-                max_xL = child.getMBR().getLeft();
-                r1 = child;
-            }
-            // If its right side is at the left of min_xR
-            if (child.getMBR().getRight() < min_xR) {
-                min_xR = child.getMBR().getRight();
-                r2 = child;
-            }
+        Rectangle r1 = getMaxLeft(children);
+        Rectangle r2 = getMinRight(children);
+        if (r1.equals(r2)) {                // If they are the same
+            children.remove(r1);            // Remove r1 from children
+            r2 = getMinRight(children);     // Look for r2 in the list without r1
+            children.add(r1);               // Add r1 again
         }
         return new Rectangle[]{r1, r2};
+    }
+
+    /**
+     * Determines the rectangle with the left side most at the right.
+     *
+     * @param candidates list with all the rectangles.
+     * @return a rectangle with its left side is the most at the right.
+     */
+    private Rectangle getMaxLeft(List<Rectangle> candidates) {
+        double max_xL = Double.MIN_VALUE;
+        Rectangle ret = null;
+        for (Rectangle candidate : candidates) {
+            // If its left side if at the righ of max_xL
+            if (candidate.getMBR().getLeft() > max_xL) {
+                max_xL = candidate.getMBR().getLeft();
+                ret = candidate;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Determines the rectangle with the right side most at the left.
+     *
+     * @param candidates list with all the rectangles.
+     * @return a rectangle with its right side most at the left.
+     */
+    private Rectangle getMinRight(List<Rectangle> candidates) {
+        double min_xR = Double.MAX_VALUE;
+        Rectangle ret = null;
+        for (Rectangle candidate : candidates) {
+            // If its right side is at the left of the min_xR
+            if (candidate.getMBR().getRight() < min_xR) {
+                min_xR = candidate.getMBR().getRight();
+                ret = candidate;
+            }
+        }
+        return ret;
     }
 
     /**
@@ -114,23 +156,50 @@ public class LinearSplit implements Splitter {
      * @return two rectangles, first is with the maximum yB, second is with the minimum yT
      */
     Rectangle[] getPairY(List<Rectangle> children) {
-        double max_yB = Double.MIN_VALUE;
-        double min_yT = Double.MAX_VALUE;
-        Rectangle r1 = null;
-        Rectangle r2 = null;
-        for (Rectangle child : children) {
-            // If its bottom side is over of max_yB
-            if (child.getMBR().getBottom() > max_yB) {
-                max_yB = child.getMBR().getBottom();
-                r1 = child;
-            }
-            // If its top side is under the of min_yT
-            if (child.getMBR().getRight() < min_yT) {
-                min_yT = child.getMBR().getRight();
-                r2 = child;
-            }
+        Rectangle r1 = getMaxBottom(children);
+        Rectangle r2 = getMinTop(children);
+        if (r1.equals(r2)) {            // They cannot be the same
+            children.remove(r1);        // Remove r1 from children
+            r2 = getMinTop(children);   // Look for r2 in children without r1
+            children.add(r1);           // Add r1 again
         }
         return new Rectangle[]{r1, r2};
+    }
+
+    /**
+     * Determines the rectangle with its bottom most up.
+     *
+     * @param candidates all the rectangles.
+     * @return the rectangle with its bottom side most up.
+     */
+    private Rectangle getMaxBottom(List<Rectangle> candidates) {
+        double max_yB = Double.MIN_VALUE;
+        Rectangle ret = null;
+        for (Rectangle candidate : candidates) {
+            if (candidate.getMBR().getBottom() > max_yB) {  // If its right side is at the right of the current max
+                max_yB = candidate.getMBR().getBottom();
+                ret = candidate;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Determines the rectangle with its top side most down.
+     *
+     * @param candidates all the rectangles.
+     * @return the rectangle with its top side most down.
+     */
+    private Rectangle getMinTop(List<Rectangle> candidates) {
+        double min_yT = Double.MAX_VALUE;
+        Rectangle ret = null;
+        for (Rectangle candidate : candidates) {
+            if (candidate.getMBR().getTop() < min_yT) {
+                min_yT = candidate.getMBR().getTop();
+                ret = candidate;
+            }
+        }
+        return ret;
     }
 
     /**

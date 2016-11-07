@@ -116,8 +116,8 @@ public class Node implements Rectangle {
         try {
             cond = minNode.insert(C);
         } catch (GeneralException e) { // manage overflow
-            this.addChildren(minNode.split());
-            this.children.remove(minNode);
+            this.children.remove(minNode); // Delete the node of overflow
+            this.addChildren(minNode.split()); // Split the node
             cond = true;
         }
         this.refreshMBR();
@@ -162,10 +162,10 @@ public class Node implements Rectangle {
      */
     void addChildren(List<Rectangle> newNodes) throws GeneralException {
         this.children.addAll(newNodes);
+        this.refreshMBR();
         if (this.children.size() > this.M) {
             throw new GeneralException("addChildren: node overflow");
         }
-        this.refreshMBR();
     }
 
     /**
