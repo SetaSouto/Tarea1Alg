@@ -50,6 +50,7 @@ public class Experiment {
         startTime = System.currentTimeMillis();
         for (Data data : queries) {
             linearTree.search(data);
+            discAccesses += linearTree.accessCountSearch(data);
         }
         stopTime = System.currentTimeMillis();
         System.out.println("Linear split queries time: " + (startTime - stopTime) + " ms");
@@ -59,6 +60,7 @@ public class Experiment {
         startTime = System.currentTimeMillis();
         for (Data data : queries) {
             linearTree.search(data);
+            discAccesses += linearTree.accessCountSearch(data);
         }
         stopTime = System.currentTimeMillis();
         System.out.println("Greene split queries time: " + (startTime - stopTime) + " ms");
