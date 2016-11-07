@@ -116,8 +116,8 @@ public class Node implements Rectangle {
         try {
             cond = minNode.insert(C);
         } catch (GeneralException e) { // manage overflow
-            this.addChildren(minNode.split());
-            this.children.remove(minNode);
+            this.children.remove(minNode); // Delete the node of overflow
+            this.addChildren(minNode.split()); // Split the node
             cond = true;
         }
         this.refreshMBR();
@@ -162,10 +162,10 @@ public class Node implements Rectangle {
      */
     void addChildren(List<Rectangle> newNodes) throws GeneralException {
         this.children.addAll(newNodes);
+        this.refreshMBR();
         if (this.children.size() > this.M) {
             throw new GeneralException("addChildren: node overflow");
         }
-        this.refreshMBR();
     }
 
     /**
@@ -187,11 +187,11 @@ public class Node implements Rectangle {
      * @return the number of Rectangles.
      */
     public int rectangleCount() {
-        int count = this.getChildrenSize();
+        int count = 1; // Itself
         for (Rectangle child : this.children) {
-            count += ((Node)child).rectangleCount();
+            count += ((Node) child).rectangleCount();
         }
-        return count + 1;
+        return count;
     }
 
     /**
@@ -202,7 +202,7 @@ public class Node implements Rectangle {
     public int nodeCount() {
         int count = 1; // starts with 1 to count itself
         for (Rectangle child : this.children) {
-            count += ((Node)child).nodeCount();
+            count += ((Node) child).nodeCount();
         }
         return count;
     }
@@ -213,12 +213,25 @@ public class Node implements Rectangle {
      * @return the node's height.
      */
     public int height() throws GeneralException {
-        int childHeight = ((Node)this.children.get(0)).height();
+        int childHeight = ((Node) this.children.get(0)).height();
         for (Rectangle child : this.children) {
-            if (((Node)child).height() != childHeight) {
+            if (((Node) child).height() != childHeight) {
                 throw new GeneralException("Children with different heights");
             }
         }
         return 1 + childHeight; // as nodes must maintain the |children| >= m invariant, childHeight should be > 0
+    }
+
+    /**
+     * Determines the total data rectangles that are in its sub-tree.
+     *
+     * @return the number of data rectangles in this sub-tree.
+     */
+    public int dataCount() {
+        int count = 0; // Node does not have data.
+        for(Rectangle child : this.children) {
+            count += ((Node) child).dataCount();
+        }
+        return count;
     }
 }

@@ -6,9 +6,9 @@ import java.util.Random;
  * System properties 1: RAM:    16 GB
  *                      HD:     SSD, NTFS, 4096 allocation unit size
  *                      OS:     Windows 10, 64 bit
- * System properties 2: RAM:
- *                      HD:
- *                      OS:
+ * System properties 2: RAM:    8 GB
+ *                      HD:     HDD, NTFS, 4096 allocation unit size
+ *                      OS:     Windows 10, 64 bit
  */
 public class Experiment {
     private static int M = 4096;            // set to allocation unit size

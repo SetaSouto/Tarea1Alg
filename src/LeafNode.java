@@ -22,16 +22,19 @@ public class LeafNode extends Node {
     @Override
     public boolean insert(Data C) throws GeneralException {
         this.children.add(C);
-
+        this.refreshMBR();
         if (this.children.size() > this.M)
             throw new GeneralException("Leaf overflow");
-
-        this.refreshMBR();
         return true;
     }
 
     @Override
     public int rectangleCount() {
+        return this.getChildrenSize() + 1;
+    }
+
+    @Override
+    public int dataCount() {
         return this.getChildrenSize();
     }
 

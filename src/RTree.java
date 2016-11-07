@@ -58,6 +58,7 @@ public class RTree {
 
     /**
      * Determines the total number of Rectangle elements in the tree.
+     *
      * @return the number of Rectangle elements.
      */
     public int rectangleCount() {
@@ -66,6 +67,7 @@ public class RTree {
 
     /**
      * Determines the total number of Node elements in the tree.
+     *
      * @return the number if Node elements.
      */
     public int nodeCount() {
@@ -73,7 +75,17 @@ public class RTree {
     }
 
     /**
+     * Determines the total of data rectangles are in the tree.
+     *
+     * @return the number of data rectangles in the tree.
+     */
+    public int dataCount() {
+        return this.root.dataCount();
+    }
+
+    /**
      * Determines the height of the tree.
+     *
      * @return the height of the tree.
      * @throws GeneralException if a node's children have different heights.
      */
@@ -83,6 +95,7 @@ public class RTree {
 
     /**
      * Determines the percentage of the total possible element references that are actually used.
+     *
      * @return the used reference percentage.
      */
     public double usagePercentage() {
