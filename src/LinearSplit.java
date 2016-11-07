@@ -32,7 +32,7 @@ public class LinearSplit implements Splitter {
             throw new Error("Starting rectangles are the same.");
         }
 
-        // Delete the pair from children:
+        // Delete the pair from childrenPaths:
         children.remove(startingPair[0]);
         children.remove(startingPair[1]);
 
@@ -47,13 +47,13 @@ public class LinearSplit implements Splitter {
         n1.addChild(startingPair[0]);
         n2.addChild(startingPair[1]);
 
-        // Iterate over the children
+        // Iterate over the childrenPaths
         for (Rectangle child : children) {
             if (n1.deltaAreaQuery(child.getMBR()) < n2.deltaAreaQuery(child.getMBR())) {
                 // n1's MBR must increase less than n2's MBR
                 if (countRest <= (m - n2.getChildrenSize())) {
                     // There are just the elements that n2 needs to keep the invariant of have at least m
-                    // children
+                    // childrenPaths
                     n2.addChild(child);
                 } else {
                     n1.addChild(child);
@@ -73,9 +73,9 @@ public class LinearSplit implements Splitter {
             throw new Error("Invariant m broken.");
         }
         if ((n1.getChildrenSize() + n2.getChildrenSize()) > initChildrenSize) {
-            throw new Error("There are more children than in the beginning.");
+            throw new Error("There are more childrenPaths than in the beginning.");
         } else if ((n1.getChildrenSize() + n2.getChildrenSize()) < initChildrenSize) {
-            throw new Error("There are less children than in the beginning.");
+            throw new Error("There are less childrenPaths than in the beginning.");
         }
 
         return new Node[]{n1, n2};
@@ -104,7 +104,7 @@ public class LinearSplit implements Splitter {
         Rectangle r1 = getMaxLeft(children);
         Rectangle r2 = getMinRight(children);
         if (r1.equals(r2)) {                // If they are the same
-            children.remove(r1);            // Remove r1 from children
+            children.remove(r1);            // Remove r1 from childrenPaths
             r2 = getMinRight(children);     // Look for r2 in the list without r1
             children.add(r1);               // Add r1 again
         }
@@ -159,8 +159,8 @@ public class LinearSplit implements Splitter {
         Rectangle r1 = getMaxBottom(children);
         Rectangle r2 = getMinTop(children);
         if (r1.equals(r2)) {            // They cannot be the same
-            children.remove(r1);        // Remove r1 from children
-            r2 = getMinTop(children);   // Look for r2 in children without r1
+            children.remove(r1);        // Remove r1 from childrenPaths
+            r2 = getMinTop(children);   // Look for r2 in childrenPaths without r1
             children.add(r1);           // Add r1 again
         }
         return new Rectangle[]{r1, r2};

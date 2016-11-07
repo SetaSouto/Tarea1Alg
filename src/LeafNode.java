@@ -6,24 +6,26 @@ public class LeafNode extends Node {
     /**
      * Default constructor.
      *
-     * @param m        minimum number of children.
-     * @param M        maximum number of children.
+     * @param m        minimum number of childrenPaths.
+     * @param M        maximum number of childrenPaths.
      * @param splitter contains split heuristic.
      */
-    public LeafNode(int m, int M, Splitter splitter) {
-        super(m, M, splitter);
+    public LeafNode(int m, int M, Splitter splitter, String path) {
+        super(m, M, splitter, path);
     }
 
     @Override
-    public Node newNode() {
-        return new LeafNode(this.m, this.M, this.splitter);
+    public Node newNode(String path) {
+        return new LeafNode(this.m, this.M, this.splitter, path);
     }
 
     @Override
     public boolean insert(Data C) throws GeneralException {
-        this.children.add(C);
+        String cPath = RTree.getNewPath();
+        RTree.save(C, cPath);
+        this.childrenPaths.add(cPath);
         this.refreshMBR();
-        if (this.children.size() > this.M)
+        if (this.childrenPaths.size() > this.M)
             throw new GeneralException("Leaf overflow");
         return true;
     }

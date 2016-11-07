@@ -51,7 +51,7 @@ class RtreeTest {
      */
     @Test
     void insert1000000() throws GeneralException {
-        insertBash(1000000, this.treeLinear);
+        insertBash(33000000, this.treeLinear);
         assertEquals(1000000, this.treeLinear.dataCount());
 
         insertBash(1000000, this.treeGreen);

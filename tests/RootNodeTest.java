@@ -21,7 +21,7 @@ class RootNodeTest {
     }
 
     /**
-     * Add 6 children (leafs) to the root. It must have 2 children, that have all the leafs.
+     * Add 6 childrenPaths (leafs) to the root. It must have 2 childrenPaths, that have all the leafs.
      */
     @Test
     void addChildrenTest() throws GeneralException {

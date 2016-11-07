@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class Data implements Rectangle {
     private double xL, xR, yT, yD; // xLeft, xRight, yTop, yDown.
+    private String path;
 
     /**
      * Constructor.
@@ -17,7 +18,7 @@ public class Data implements Rectangle {
      * @param x2 the x of the bottom-right corner.
      * @param y2 the y of the bottom-right corner.
      */
-    public Data(double x1, double y1, double x2, double y2) throws GeneralException {
+    public Data(double x1, double y1, double x2, double y2, String path) throws GeneralException {
         if (x1 == x2 || y1 == y2) {
             throw new GeneralException("Data with no area.");
         }
@@ -25,6 +26,7 @@ public class Data implements Rectangle {
         this.xR = Math.max(x1, x2);
         this.yD = Math.min(y1, y2);
         this.yT = Math.max(y1, y2);
+        this.path = path;
     }
 
     @Override
@@ -44,6 +46,11 @@ public class Data implements Rectangle {
     @Override
     public int accessCountSearch(Data C) {
         return 0;
+    }
+
+    @Override
+    public String getPath() {
+        return this.path;
     }
 
     /**

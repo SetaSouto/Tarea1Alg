@@ -106,7 +106,7 @@ class NodeTest {
 
     /**
      * Node has only one child, a leaf. Now we added a new child, another leaf. It must have two
-     * children now.
+     * childrenPaths now.
      */
     @Test
     void addChild() throws GeneralException {
@@ -115,7 +115,7 @@ class NodeTest {
         newChild.insert(data5);
         // Add the new child
         this.node.addChild(newChild);
-        // Now the node must have 2 children
+        // Now the node must have 2 childrenPaths
         assertEquals(2, this.node.getChildrenSize());
     }
 

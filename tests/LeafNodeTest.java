@@ -17,7 +17,7 @@ class LeafNodeTest {
 
     @Test
     void insert() throws GeneralException {
-        // It does not have children:
+        // It does not have childrenPaths:
         assertEquals(0, this.leaf.getChildrenSize());
 
         Data data = new Data(5, 5, 0, 0);
@@ -34,7 +34,7 @@ class LeafNodeTest {
             this.leaf.insert(new Data(3, 3, 0, 0));
             this.leaf.insert(new Data(4, 4, 0, 0));
         } catch (GeneralException e) {
-            // Raise the exception but keeps having 4 children this node:
+            // Raise the exception but keeps having 4 childrenPaths this node:
             assertEquals(4, this.leaf.getChildrenSize());
         }
     }

@@ -6,10 +6,10 @@ import java.util.List;
  */
 interface Splitter {
     /**
-     * Splits the children of a node into two different nodes.
+     * Splits the childrenPaths of a node into two different nodes.
      *
-     * @param children the children of the node to be split.
+     * @param children the childrenPaths of the node to be split.
      * @return an array containing the two resulting nodes.
      */
-    Node[] split(List<Rectangle> children, Node n1, Node n2);
+    Node[] split(List<String> children, Node n1, Node n2);
 }
