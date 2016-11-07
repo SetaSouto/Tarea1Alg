@@ -17,7 +17,13 @@ public class Experiment {
     private static int maxDim = 100;
 
     public static void main(String[] args) {
-
+        for (int i = 10; i <= 25; i+=5) {
+            try {
+                experiment(2^i);
+            } catch (GeneralException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -25,7 +31,7 @@ public class Experiment {
      * @param n the number of elements to be contained in each tree.
      * @throws GeneralException
      */
-    private void experiment(int n) throws GeneralException {
+    private static void experiment(int n) throws GeneralException {
         Data[] randomDataset = generateData(n);
         Data[] queries = generateData(n/10);
 
@@ -45,25 +51,32 @@ public class Experiment {
 
         System.out.println("Greene split usage percentage: " + greeneTree.usagePercentage());
 
-        // Measure search performance
-        int discAccesses = 0;
+        // Measure search performance in time units
         startTime = System.currentTimeMillis();
         for (Data data : queries) {
             linearTree.search(data);
-            discAccesses += linearTree.accessCountSearch(data);
         }
         stopTime = System.currentTimeMillis();
         System.out.println("Linear split queries time: " + (startTime - stopTime) + " ms");
-        System.out.println("Linear split number of accesses: " + discAccesses);
 
-        discAccesses = 0;
         startTime = System.currentTimeMillis();
         for (Data data : queries) {
             linearTree.search(data);
-            discAccesses += linearTree.accessCountSearch(data);
         }
         stopTime = System.currentTimeMillis();
         System.out.println("Greene split queries time: " + (startTime - stopTime) + " ms");
+
+        // Measure search performance in disc accesses
+        int discAccesses = 0;
+        for (Data data : queries) {
+            discAccesses += linearTree.accessCountSearch(data);
+        }
+        System.out.println("Linear split number of accesses: " + discAccesses);
+
+        discAccesses = 0;
+        for (Data data : queries) {
+            discAccesses += linearTree.accessCountSearch(data);
+        }
         System.out.println("Greene split number of accesses: " + discAccesses);
     }
 
@@ -74,7 +87,7 @@ public class Experiment {
      * @return the root of the resulting tree.
      * @throws GeneralException raised when a Data with no dimensions is inserted.
      */
-    private RTree generateTree(Data[] data, Splitter splitter) throws GeneralException {
+    private static RTree generateTree(Data[] data, Splitter splitter) throws GeneralException {
         RTree tree = new RTree(m, M, splitter);
         for (Data d : data) {
             tree.insert(d);
@@ -87,7 +100,7 @@ public class Experiment {
      * @param n the amount of Data to be generated.
      * @return an array containing random Data objects.
      */
-    private Data[] generateData(int n) {
+    private static Data[] generateData(int n) {
         Random r = new Random();
         Data[] data = new Data[n];
         for (int i = 0; i < n; i++) {
