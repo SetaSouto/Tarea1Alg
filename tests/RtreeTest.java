@@ -14,7 +14,7 @@ class RtreeTest {
     void setUp() {
         int m = 3, M = 6;
         this.treeLinear = new RTree(m, M, new LinearSplit(m, M));
-        //this.treeGreen = new RTree(m, M, new GreeneSplit(m, M));
+        this.treeGreen = new RTree(m, M, new GreeneSplit(m, M));
     }
 
     /**
@@ -50,32 +50,32 @@ class RtreeTest {
     void height() throws GeneralException {
         // With no data, has no height.
         assertEquals(0, this.treeLinear.height());
-        //assertEquals(0, this.treeGreen.height());
+        assertEquals(0, this.treeGreen.height());
 
         // Insert 5 elements, has height zero, es only one leaf
         insertBash(5, this.treeLinear);
-        //insertBash(5, this.treeGreen);
+        insertBash(5, this.treeGreen);
         assertEquals(0, this.treeLinear.height());
-        //assertEquals(0, this.treeGreen.height());
+        assertEquals(0, this.treeGreen.height());
 
         // Insert 2 more elements, force to do split (M=6) and now it must have height 1
         insertBash(2, this.treeLinear);
-        //insertBash(2, this.treeGreen);
-        //assertEquals(1, this.treeGreen.height());
+        insertBash(2, this.treeGreen);
+        assertEquals(1, this.treeGreen.height());
         assertEquals(1, this.treeLinear.height());
 
         // We have 7 elements, we force the root to do split by inserting 30 more elements.
         // Total elements in the tree: 37
         insertBash(30, this.treeLinear);
-        //insertBash(30, this.treeGreen);
+        insertBash(30, this.treeGreen);
         assertEquals(2, this.treeLinear.height());
-        //assertEquals(2, this.treeGreen.height());
+        assertEquals(2, this.treeGreen.height());
 
         // Now we force to have height 3 by adding 200 data. Total Elements in the tree: 237
         insertBash(200, this.treeLinear);
-        //insertBash(200, this.treeGreen);
+        insertBash(200, this.treeGreen);
         assertEquals(3, this.treeLinear.height());
-        //assertEquals(3, this.treeGreen.height());
+        assertEquals(3, this.treeGreen.height());
     }
 
     /**
