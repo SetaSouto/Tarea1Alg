@@ -18,15 +18,18 @@ public class Experiment {
     private static int m = 4 * M / 10;
     private static int maxCoord = 500001;   // 500 000 + 1 to compensate non-inclusion of the bound parameter in nextInt
     private static int maxDim = 100;
+    private static PrintWriter writerCSV;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        for (int i = 10; i <= 25; i++) {
+        writerCSV = new PrintWriter("GlobalStats.csv", "UTF-8");
+        for (int i = 9; i <= 25; i++) {
             try {
                 experiment((int) Math.pow(2, i));
             } catch (GeneralException e) {
                 e.printStackTrace();
             }
         }
+        writerCSV.close();
     }
 
     /**
@@ -56,7 +59,7 @@ public class Experiment {
     private static void experimentTree(int n, Splitter splitter, String name, Data[] randomDataset, Data[] queries) throws
             GeneralException, FileNotFoundException, UnsupportedEncodingException {
 
-        String nameFile = "Stats_n_" + n + (System.currentTimeMillis() / 1000) + ".txt";
+        String nameFile = "Stats//Stats_n_" + n + (System.currentTimeMillis() / 1000) + ".txt";
         PrintWriter writer = new PrintWriter(nameFile, "UTF-8");
 
         System.out.println("------------------");
@@ -71,8 +74,8 @@ public class Experiment {
         RTree tree = generateTree(randomDataset, splitter);
         long stopTime = System.currentTimeMillis();
         long creationTime = (stopTime - startTime);
-        System.out.println(name + " creation time: " + creationTime + " ms.");
-        writer.println(name + " creation time: " + creationTime + " ms.");
+        System.out.println(name + " creation time: " + format(creationTime));
+        writer.println(name + " creation time: " + format(creationTime));
 
         // Measure usage percentage
         double usagePercentage = tree.usagePercentage();
@@ -86,8 +89,8 @@ public class Experiment {
         }
         stopTime = System.currentTimeMillis();
         long queriesTime = (stopTime - startTime);
-        System.out.println(name + " queries time: " + queriesTime + " ms");
-        writer.println(name + " queries time: " + queriesTime + " ms");
+        System.out.println(name + " queries time: " + format(queriesTime));
+        writer.println(name + " queries time: " + format(queriesTime));
 
         // Measure search performance in disc accesses
         int discAccesses = 0;
@@ -99,7 +102,7 @@ public class Experiment {
 
         writer.close();
 
-        //csvDump(n, creationTime, usagePercentage, queriesTime, discAccesses);
+        toCSV(name, n, creationTime, usagePercentage, queriesTime, discAccesses);
     }
 
     /**
@@ -168,10 +171,8 @@ public class Experiment {
      * @param discAccess      number of discAccess.
      */
     private static void toCSV(String heuristic, int n, long creationTime, double usagePercentage, long queriesTime, int discAccess) throws FileNotFoundException, UnsupportedEncodingException {
-        String nameFile = "GlobalStats.csv"
-        PrintWriter writer = new PrintWriter(nameFile, "UTF-8");
         StringBuilder line = new StringBuilder(heuristic).append(",").append(n).append(",").append(creationTime).append(",");
         line.append(usagePercentage).append(",").append(queriesTime).append(",").append(discAccess);
-        writer.println(line.toString());
+        writerCSV.println(line.toString());
     }
 }
