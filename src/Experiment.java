@@ -20,7 +20,7 @@ public class Experiment {
     private static int maxDim = 100;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        for (int i = 10; i <= 25; i += 5) {
+        for (int i = 10; i <= 25; i ++) {
             try {
                 experiment((int) Math.pow(2, i));
             } catch (GeneralException e) {

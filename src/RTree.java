@@ -3,10 +3,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * An R-tree is a tree that handles rectangles, it is like a B-tree. It can insert and search with
@@ -20,7 +17,7 @@ public class RTree {
     private Node root;
     private static int elementCounter = 0;
     private static String homePath = "Data//";
-    private static int maxBufferSize = 1000000;
+    private static int maxBufferSize = 15000000;
     private static Rectangle[] buffer;
 
     /**
@@ -159,16 +156,21 @@ public class RTree {
      * @param c the Rectangle to be saved.
      */
     public static void save(Rectangle c) {
-        int index = Integer.parseInt(c.getPath().substring(5).split(".")[0]);
-        if (buffer[index] != null) {
+        int index = Integer.parseInt(c.getPath().substring(6).split("\\.")[0]) % maxBufferSize;
+        if (buffer[index] != null && !c.getPath().equals(buffer[index].getPath())) {
             serialize(buffer[index]);
         }
         buffer[index] = c;
     }
 
+    /**
+     * Tries to get object from the buffer. If unavailable, tries to deserialize an object.
+     * @param path the rectangle's associated file path.
+     * @return the object associated with the path.
+     */
     public static Object getObj(String path){
-        int index = Integer.parseInt(path.substring(5).split(".")[0]);
-        if (buffer[index] != null) {
+        int index = Integer.parseInt(path.substring(6).split("\\.")[0]) % maxBufferSize;
+        if (buffer[index] != null && buffer[index].getPath().equals(path)) {
             return buffer[index];
         }
         return deserialize(path);
@@ -189,7 +191,7 @@ public class RTree {
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException i) {
-            i.printStackTrace();
+            throw new Error("No serialized object for path " + path);
         }
         return e;
     }
