@@ -30,12 +30,32 @@ public class Experiment {
     }
 
     /**
-     * Prints several R-Tree metrics to the standard output for different split heuristics and data
-     * sets.
+     * Prints several R-Tree metrics to the standard output for different split heuristics and data sets.
      *
      * @param n the number of elements to be contained in each tree.
      */
-    private static void experiment(int n) throws GeneralException, FileNotFoundException, UnsupportedEncodingException {
+    private static void experiment(int n) throws FileNotFoundException, UnsupportedEncodingException, GeneralException {
+        Data[] randomDataset = generateData(n);
+        Data[] queries = generateData(n / 10);
+
+        experimentTree(n, new LinearSplit(m, M), "Linear Split", randomDataset, queries);
+        experimentTree(n, new GreeneSplit(m, M), "Greene Split", randomDataset, queries);
+    }
+
+    /**
+     * Creates metrics for a given tree type.
+     * @param n the number of elements to be inserted.
+     * @param splitter the split heuristics the tree will use.
+     * @param name the name of the tree.
+     * @param randomDataset the data to be inserted into the tree.
+     * @param queries the data to be searched in the tree.
+     * @throws GeneralException raised when a Data with no dimensions is inserted.
+     * @throws FileNotFoundException thrown by PrintWriter.
+     * @throws UnsupportedEncodingException thrown by PrintWriter.
+     */
+    private static void experimentTree(int n, Splitter splitter, String name, Data[] randomDataset, Data[] queries) throws
+            GeneralException, FileNotFoundException, UnsupportedEncodingException {
+
         String nameFile = "Stats_n_" + n + (System.currentTimeMillis() / 1000) + ".txt";
         PrintWriter writer = new PrintWriter(nameFile, "UTF-8");
 
@@ -46,62 +66,40 @@ public class Experiment {
         writer.println("Test with n=" + n);
         writer.println(" ");
 
-        Data[] randomDataset = generateData(n);
-        Data[] queries = generateData(n / 10);
-
         // Measure tree creation times
         long startTime = System.currentTimeMillis();
-        RTree linearTree = generateTree(randomDataset, new LinearSplit(m, M));
+        RTree tree = generateTree(randomDataset, splitter);
         long stopTime = System.currentTimeMillis();
-        System.out.println("Linear split creation time: " + (stopTime - startTime) + " ms.");
-        writer.println("Linear split creation time: " + (stopTime - startTime) + " ms.");
-
-        startTime = System.currentTimeMillis();
-        RTree greeneTree = generateTree(randomDataset, new GreeneSplit(m, M));
-        stopTime = System.currentTimeMillis();
-        System.out.println("Greene split creation time: " + (stopTime - startTime) + " ms.");
-        writer.println("Greene split creation time: " + (stopTime - startTime) + " ms.");
+        long creationTime = (stopTime - startTime);
+        System.out.println(name + " creation time: " + creationTime + " ms.");
+        writer.println(name + " creation time: " + creationTime + " ms.");
 
         // Measure usage percentage
-        System.out.println("Linear split usage percentage: " + linearTree.usagePercentage());
-        writer.println("Linear split usage percentage: " + linearTree.usagePercentage());
-
-        System.out.println("Greene split usage percentage: " + greeneTree.usagePercentage());
-        writer.println("Greene split usage percentage: " + greeneTree.usagePercentage());
+        double usagePercentage = tree.usagePercentage();
+        System.out.println(name + " usage percentage: " + usagePercentage);
+        writer.println(name + " usage percentage: " + usagePercentage);
 
         // Measure search performance in time units
         startTime = System.currentTimeMillis();
         for (Data data : queries) {
-            linearTree.search(data);
+            tree.search(data);
         }
         stopTime = System.currentTimeMillis();
-        System.out.println("Linear split queries time: " + (stopTime - startTime) + " ms");
-        writer.println("Linear split queries time: " + (stopTime - startTime) + " ms");
-
-        startTime = System.currentTimeMillis();
-        for (Data data : queries) {
-            linearTree.search(data);
-        }
-        stopTime = System.currentTimeMillis();
-        System.out.println("Greene split queries time: " + (stopTime - startTime) + " ms");
-        writer.println("Greene split queries time: " + (stopTime - startTime) + " ms");
+        long queriesTime = (stopTime - startTime);
+        System.out.println(name + " queries time: " + queriesTime + " ms");
+        writer.println(name + " queries time: " + queriesTime + " ms");
 
         // Measure search performance in disc accesses
         int discAccesses = 0;
         for (Data data : queries) {
-            discAccesses += linearTree.accessCountSearch(data);
+            discAccesses += tree.accessCountSearch(data);
         }
-        System.out.println("Linear split number of accesses: " + discAccesses);
-        writer.println("Linear split number of accesses: " + discAccesses);
-
-        discAccesses = 0;
-        for (Data data : queries) {
-            discAccesses += linearTree.accessCountSearch(data);
-        }
-        System.out.println("Greene split number of accesses: " + discAccesses);
-        writer.println("Greene split number of accesses: " + discAccesses);
+        System.out.println(name + " number of accesses: " + discAccesses);
+        writer.println(name + " number of accesses: " + discAccesses);
 
         writer.close();
+
+        //csvDump(n, creationTime, usagePercentage, queriesTime, discAccesses);
     }
 
     /**
