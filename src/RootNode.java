@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * RootNode is the root of an R-tree. When it has an overflow creates two nodes that contains all of
@@ -33,7 +32,7 @@ public class RootNode extends Node {
 
     private void refreshPath() {
         this.path = RTree.getNewPath();
-        RTree.save(this, path);
+        RTree.save(this);
     }
 
 

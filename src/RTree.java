@@ -3,7 +3,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * An R-tree is a tree that handles rectangles, it is like a B-tree. It can insert and search with
@@ -17,6 +20,8 @@ public class RTree {
     private Node root;
     private static int elementCounter = 0;
     private static String homePath = "Data//";
+    private static int maxBufferSize = 1000000;
+    private static Rectangle[] buffer;
 
     /**
      * Constructor of the R-Tree.
@@ -31,6 +36,7 @@ public class RTree {
         this.splitter = splitter;
         // It starts with a lonely leaf:
         this.root = new LeafNode(this.m, this.M, this.splitter, this.getNewPath());
+        buffer = new Rectangle[maxBufferSize];
     }
 
     /**
@@ -132,12 +138,11 @@ public class RTree {
     /**
      * Serializes an object.
      *
-     * @param c    object to serialize
-     * @param path path to the serialized object file.
+     *  @param c    object to serialize
      */
-    public static void save(Rectangle c, String path) {
+    private static void serialize(Rectangle c) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(path);
+            FileOutputStream fileOut = new FileOutputStream(c.getPath());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(c);
             out.close();
@@ -148,12 +153,34 @@ public class RTree {
     }
 
     /**
-     * Deserializes and returns an object.
+     * Saves a rectangle in the buffer. If the buffer is full, we serialize the Rectangle with less priority
+     * and insert the new node in its place in the buffer.
+     *
+     * @param c the Rectangle to be saved.
+     */
+    public static void save(Rectangle c) {
+        int index = Integer.parseInt(c.getPath().substring(5).split(".")[0]);
+        if (buffer[index] != null) {
+            serialize(buffer[index]);
+        }
+        buffer[index] = c;
+    }
+
+    public static Object getObj(String path){
+        int index = Integer.parseInt(path.substring(5).split(".")[0]);
+        if (buffer[index] != null) {
+            return buffer[index];
+        }
+        return deserialize(path);
+    }
+
+    /**
+     * Deserialize and return an object.
      *
      * @param path path to the serialized object file.
      * @return the corresponding object.
      */
-    public static Object getObj(String path) {
+    private static Object deserialize(String path) {
         Object e = null;
         try {
             FileInputStream fileIn = new FileInputStream(path);
@@ -161,10 +188,8 @@ public class RTree {
             e = in.readObject();
             in.close();
             fileIn.close();
-        } catch (IOException i) {
+        } catch (IOException | ClassNotFoundException i) {
             i.printStackTrace();
-        } catch (ClassNotFoundException c) {
-            c.printStackTrace();
         }
         return e;
     }

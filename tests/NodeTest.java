@@ -31,7 +31,7 @@ class NodeTest {
         this.node = new Node(m, M, new LinearSplit(m, M), RTree.getNewPath());
         // Has only one child (leaf):
         LeafNode leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M), RTree.getNewPath());
-        RTree.save(leaf, leaf.getPath());
+        RTree.save(leaf);
 
         // Leaf has only one child
         this.dataLeaf = new Data(1, 1, 0, 0, RTree.getNewPath());
