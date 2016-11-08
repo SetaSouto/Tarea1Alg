@@ -17,7 +17,9 @@ public class RootNode extends Node {
 
     @Override
     protected void addChild(Rectangle newNode) {
-        this.childrenPaths.add(newNode.getPath());
+        if (!this.childrenPaths.contains(newNode.getPath())) {
+            this.childrenPaths.add(newNode.getPath());
+        }
         this.updateMBR(newNode);
         if (this.childrenPaths.size() > this.M) {
             // Difference with node: here we don't throw an exception, we reset our childrenPaths
