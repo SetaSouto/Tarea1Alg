@@ -22,7 +22,7 @@ public class LeafNode extends Node {
     @Override
     public boolean insert(Data C) throws GeneralException {
         String cPath = C.getPath();
-        RTree.save(C, cPath);
+        RTree.save(C);
         this.childrenPaths.add(cPath);
         this.updateMBR(C);
         if (this.childrenPaths.size() > this.M)

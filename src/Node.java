@@ -97,7 +97,7 @@ public class Node implements Rectangle, java.io.Serializable {
         } else {
             this.MBR = C.getMBR();
         }
-        RTree.save(this, this.path);
+        RTree.save(this);
     }
 
     /**
@@ -190,8 +190,8 @@ public class Node implements Rectangle, java.io.Serializable {
         } catch (GeneralException e) {
             throw new Error("Overflow during split.");
         }
-        RTree.save(splitResult[0], this.path);
-        RTree.save(splitResult[1], newPath);
+        RTree.save(splitResult[0]);
+        RTree.save(splitResult[1]);
         return splitResult;
     }
 
