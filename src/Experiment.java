@@ -31,7 +31,7 @@ public class Experiment {
      * @param n the number of elements to be contained in each tree.
      * @throws GeneralException
      */
-    private static void experiment(int n) throws GeneralException {
+    private static void experiment(int n) throws GeneralException { // TODO: use only one tree at a time.
         Data[] randomDataset = generateData(n);
         Data[] queries = generateData(n/10);
 
@@ -109,7 +109,7 @@ public class Experiment {
             double length = r.nextDouble() * maxDim;
             double width = r.nextDouble() * maxDim;
             try {
-                data[i] = new Data(x, y, x + width, y + length);
+                data[i] = new Data(x, y, x + width, y + length, RTree.getNewPath());
             } catch (GeneralException e) {
                 e.printStackTrace();
             }

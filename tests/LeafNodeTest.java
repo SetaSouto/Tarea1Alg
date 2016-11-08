@@ -12,7 +12,7 @@ class LeafNodeTest {
     LeafNodeTest() {
         this.m = 1;
         this.M = 3;
-        leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
+        leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M), RTree.getNewPath());
     }
 
     @Test
@@ -20,7 +20,7 @@ class LeafNodeTest {
         // It does not have childrenPaths:
         assertEquals(0, this.leaf.getChildrenSize());
 
-        Data data = new Data(5, 5, 0, 0);
+        Data data = new Data(5, 5, 0, 0, RTree.getNewPath());
         this.leaf.insert(data);
         // Now has a child:
         assertEquals(1, this.leaf.getChildrenSize());
@@ -29,10 +29,10 @@ class LeafNodeTest {
     @Test
     void overflow() {
         try {
-            this.leaf.insert(new Data(1, 1, 0, 0));
-            this.leaf.insert(new Data(2, 2, 0, 0));
-            this.leaf.insert(new Data(3, 3, 0, 0));
-            this.leaf.insert(new Data(4, 4, 0, 0));
+            this.leaf.insert(new Data(1, 1, 0, 0, RTree.getNewPath()));
+            this.leaf.insert(new Data(2, 2, 0, 0, RTree.getNewPath()));
+            this.leaf.insert(new Data(3, 3, 0, 0, RTree.getNewPath()));
+            this.leaf.insert(new Data(4, 4, 0, 0, RTree.getNewPath()));
         } catch (GeneralException e) {
             // Raise the exception but keeps having 4 childrenPaths this node:
             assertEquals(4, this.leaf.getChildrenSize());
@@ -40,15 +40,15 @@ class LeafNodeTest {
     }
 
     @Test
-    void refreshMBR() throws GeneralException {
+    void updateMBR() throws GeneralException {
         // Insert new data (has no data yet)
-        Data data1 = new Data(1, 1, 0, 0);
+        Data data1 = new Data(1, 1, 0, 0, RTree.getNewPath());
         this.leaf.insert(data1);
         // Now has like MBR the data1 recently added:
         assertTrue(data1.equals(this.leaf.getMBR()));
 
         // Insert new data
-        Data data2 = new Data(2, 2, 0, 0);
+        Data data2 = new Data(2, 2, 0, 0, RTree.getNewPath());
         this.leaf.insert(data2);
         // Data2 covers data1, so the new MBR is data2:
         assertTrue(data2.equals(this.leaf.getMBR()));

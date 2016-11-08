@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -5,7 +6,7 @@ import java.util.List;
  *
  * @author souto
  */
-public class LinearSplit implements Splitter {
+public class LinearSplit implements Splitter, java.io.Serializable {
     int m, M;
 
     /**
@@ -20,7 +21,8 @@ public class LinearSplit implements Splitter {
     }
 
     @Override
-    public Node[] split(List<Rectangle> children, Node n1, Node n2) {
+    public Node[] split(List<String> childrenPaths, Node n1, Node n2) throws GeneralException {
+        List<Rectangle> children = this.getObjList(childrenPaths);
         int initChildrenSize = children.size(); // To check errors.
 
         Rectangle[] startingPair = this.mostSeparated(children);
@@ -79,6 +81,15 @@ public class LinearSplit implements Splitter {
         }
 
         return new Node[]{n1, n2};
+    }
+
+    protected List<Rectangle> getObjList(List<String> childrenPaths) {
+        List<Rectangle> ret = new ArrayList<>();
+        Rectangle child;
+        for (String childPath : childrenPaths) {
+            ret.add((Rectangle) RTree.getObj(childPath));
+        }
+        return ret;
     }
 
     private Rectangle[] mostSeparated(List<Rectangle> children) {

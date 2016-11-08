@@ -24,7 +24,7 @@ public class LeafNode extends Node {
         String cPath = RTree.getNewPath();
         RTree.save(C, cPath);
         this.childrenPaths.add(cPath);
-        this.refreshMBR();
+        this.updateMBR(C);
         if (this.childrenPaths.size() > this.M)
             throw new GeneralException("Leaf overflow");
         return true;

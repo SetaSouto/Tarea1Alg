@@ -2,9 +2,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A Greene split determines the two most distant rectangles as in a LinearSplit, sorts rectangles along
- * the axis in which the two are separated and splits original rectangles into the lower and upper halves
- * of the sorted rectangle array.
+ * A Greene split determines the two most distant rectangles as in a LinearSplit, sorts rectangles
+ * along the axis in which the two are separated and splits original rectangles into the lower and
+ * upper halves of the sorted rectangle array.
  *
  * Created by fcocl_000 on 2016-11-05.
  */
@@ -20,23 +20,25 @@ public class GreeneSplit extends LinearSplit {
     }
 
     @Override
-    public Node[] split(List<Rectangle> children, Node n1, Node n2) {
+    public Node[] split(List<String> childrenPaths, Node n1, Node n2) throws GeneralException {
+        List<Rectangle> children = this.getObjList(childrenPaths);
         if (splitAxisX(children)) {
             Collections.sort(children, (r1, r2) -> (int) (r1.getMBR().getLeft() - r2.getMBR().getLeft()));
         } else {
             Collections.sort(children, (r1, r2) -> (int) (r1.getMBR().getBottom() - r2.getMBR().getBottom()));
         }
-        try {
-            n1.addChildren(children.subList(0, M/2));
-            n2.addChildren(children.subList(M/2, children.size()));
-        } catch (GeneralException e) {
-            e.printStackTrace();
+        for (Rectangle child : children.subList(0, M / 2)) {
+            n1.addChild(child);
+        }
+        for (Rectangle child : children.subList(M / 2, children.size())) {
+            n2.addChild(child);
         }
         return new Node[]{n1, n2};
     }
 
     /**
      * Determines the axis (x or y) along which the starting rectangles are separated.
+     *
      * @param children the rectangles being split.
      * @return true if the separation axis is the x axis.
      */

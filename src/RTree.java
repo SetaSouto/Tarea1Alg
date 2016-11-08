@@ -15,7 +15,8 @@ public class RTree {
     private int m, M;
     private Splitter splitter;
     private Node root;
-    private static int elementCounter;
+    private static int elementCounter = 0;
+    private static String homePath = "Data//";
 
     /**
      * Constructor of the R-Tree.
@@ -38,7 +39,7 @@ public class RTree {
      * @return a new path.
      */
     public static String getNewPath() {
-        return Integer.toString(++elementCounter) + ".ser";
+        return homePath + Integer.toString(++elementCounter) + ".ser";
     }
 
     /**
@@ -54,7 +55,7 @@ public class RTree {
         } catch (GeneralException e) {
             // In case of an exception doing insert() change root (LeafNode) to RootNode.
             Rectangle[] newNodes = this.root.split();
-            this.root = new RootNode(this.m, this.M, this.splitter);
+            this.root = new RootNode(this.m, this.M, this.splitter, RTree.getNewPath());
             this.root.addChild(newNodes[0]);
             this.root.addChild(newNodes[1]);
             // Now RootNode carries about the exceptions.

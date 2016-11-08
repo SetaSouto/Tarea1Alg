@@ -17,7 +17,7 @@ class RootNodeTest {
         this.m = 1;
         this.M = 3;
         this.splitter = new LinearSplit(this.m, this.M);
-        this.root = new RootNode(this.m, this.M, this.splitter);
+        this.root = new RootNode(this.m, this.M, this.splitter, RTree.getNewPath());
     }
 
     /**
@@ -34,8 +34,10 @@ class RootNodeTest {
         for (int i = 0; i < 5; i++) {
             newChildren.add(sampleLeaf());
         }
-        // Add 5 leafs
-        root.addChildren(newChildren);
+        // Add 5 leaf
+        for (Rectangle child: newChildren) {
+            root.addChild(child);
+        }
 
         // Overflow, it splits and now it must have two nodes
         assertEquals(2, root.getChildrenSize());
@@ -47,7 +49,7 @@ class RootNodeTest {
      * @return a leaf
      */
     LeafNode sampleLeaf() throws GeneralException {
-        LeafNode leaf = new LeafNode(this.m, this.M, this.splitter);
+        LeafNode leaf = new LeafNode(this.m, this.M, this.splitter, RTree.getNewPath());
         leaf.insert(sampleData());
         return leaf;
     }
@@ -56,7 +58,7 @@ class RootNodeTest {
      * Returns a random data with corners between 0.0 and 1.0.
      */
     Data sampleData() throws GeneralException {
-        return new Data(Math.random(), Math.random(), Math.random(), Math.random());
+        return new Data(Math.random(), Math.random(), Math.random(), Math.random(), RTree.getNewPath());
     }
 
 

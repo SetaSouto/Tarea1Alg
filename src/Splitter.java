@@ -11,5 +11,5 @@ interface Splitter {
      * @param children the childrenPaths of the node to be split.
      * @return an array containing the two resulting nodes.
      */
-    Node[] split(List<String> children, Node n1, Node n2);
+    Node[] split(List<String> children, Node n1, Node n2) throws GeneralException;
 }

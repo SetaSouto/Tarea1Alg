@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -11,24 +12,29 @@ import static org.junit.jupiter.api.Assertions.*;
 class NodeTest {
     private Node node;
     private int m, M;
-    private Data data1 = new Data(10, 10, 0, 0);
-    private Data data2 = new Data(5, 5, 0, 0);
-    private Data data3 = new Data(0, 0, -10, -10);
-    private Data data4 = new Data(0, 0, -5, -5);
+    private Data data1 = new Data(10, 10, 0, 0, RTree.getNewPath());
+    private Data data2 = new Data(5, 5, 0, 0, RTree.getNewPath());
+    private Data data3 = new Data(0, 0, -10, -10, RTree.getNewPath());
+    private Data data4 = new Data(0, 0, -5, -5, RTree.getNewPath());
     // Only intersects data1 anda data2: (It's IN data1 and data2)
-    private Data data5 = new Data(2, 2, 1, 1);
+    private Data data5 = new Data(2, 2, 1, 1, RTree.getNewPath());
     // First data in the leaf:
     private Data dataLeaf;
 
-
     NodeTest() throws GeneralException {
+    }
+
+    @BeforeEach
+    void setUp() throws GeneralException {
         this.m = 1;
         this.M = 5;
-        this.node = new Node(m, M, new LinearSplit(m, M));
+        this.node = new Node(m, M, new LinearSplit(m, M), RTree.getNewPath());
         // Has only one child (leaf):
-        LeafNode leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
+        LeafNode leaf = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M), RTree.getNewPath());
+        RTree.save(leaf, leaf.getPath());
+
         // Leaf has only one child
-        this.dataLeaf = new Data(1, 1, 0, 0);
+        this.dataLeaf = new Data(1, 1, 0, 0, RTree.getNewPath());
         leaf.insert(dataLeaf);
         this.node.addChild(leaf);
     }
@@ -43,7 +49,7 @@ class NodeTest {
         this.node.insert(data2);
         this.node.insert(data3);
         this.node.insert(data4);
-        assertTrue(new Data(10, 10, -10, -10).equals(node.getMBR()));
+        assertTrue(new Data(10, 10, -10, -10, RTree.getNewPath()).equals(node.getMBR()));
     }
 
     @Test
@@ -54,7 +60,7 @@ class NodeTest {
          * list with the data in the leaf.
          */
         list.add(dataLeaf);
-        assertEquals(list, node.search(data1));
+        checkList(list, node.search(data1));
 
         // Add the data:
         this.node.insert(data1);
@@ -67,7 +73,17 @@ class NodeTest {
         // The original leaf's data is already in the list.
         list.add(data1);
         list.add(data2);
-        assertEquals(list, node.search(data5));
+        checkList(list, node.search(data5));
+    }
+
+    private void checkList(List<Data> list1, List<Data> list2) {
+        if (list1.size() != list2.size()) {
+            assertTrue(false);
+        } else {
+            for(int i=0; i< list1.size(); i++) {
+                assertTrue(list1.get(i).equals(list2.get(i)));
+            }
+        }
     }
 
     /**
@@ -84,7 +100,7 @@ class NodeTest {
         this.node.insert(data4);
 
         // Data that increments the MBR in 41 units: one more unit up, one mor unit right.
-        Data data6 = new Data(11, 11, 0, 0);
+        Data data6 = new Data(11, 11, 0, 0, RTree.getNewPath());
         assertEquals(41, this.node.deltaAreaQuery(data6));
 
         // This is contained in the actual MBR, area increments in zero units
@@ -110,7 +126,7 @@ class NodeTest {
      */
     @Test
     void addChild() throws GeneralException {
-        LeafNode newChild = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M));
+        LeafNode newChild = new LeafNode(this.m, this.M, new LinearSplit(this.m, this.M), RTree.getNewPath());
         // We need to insert any data to have at least one rectangle
         newChild.insert(data5);
         // Add the new child

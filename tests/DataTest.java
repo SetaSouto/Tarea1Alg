@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by souto on 05-11-2016.
  */
 class DataTest {
-    private Data data = new Data(10, 10, 0, 0);
+    private Data data = new Data(10, 10, 0, 0, RTree.getNewPath());
     // Not intersected
-    private Data data1 = new Data(20, 20, 11, 11);
+    private Data data1 = new Data(20, 20, 11, 11, RTree.getNewPath());
     // Intersected
-    private Data data2 = new Data(5, 5, 2, 2);
+    private Data data2 = new Data(5, 5, 2, 2, RTree.getNewPath());
 
     DataTest() throws GeneralException {
     }
@@ -68,7 +68,7 @@ class DataTest {
 
     @Test
     void equals() throws GeneralException {
-        assertTrue(this.data.equals(new Data(10, 10, 0, 0)));
+        assertTrue(this.data.equals(new Data(10, 10, 0, 0, RTree.getNewPath())));
     }
 
 }

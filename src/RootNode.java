@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,17 +11,27 @@ public class RootNode extends Node {
     /**
      * Constructor. Calls Node's constructor only.
      */
-    public RootNode(int m, int M, Splitter splitter) {
-        super(m, M, splitter);
+    public RootNode(int m, int M, Splitter splitter, String path) {
+        super(m, M, splitter, path);
     }
 
     @Override
-    void addChildren(List<Rectangle> newNodes) {
-        this.childrenPaths.addAll(newNodes);
+    protected void addChild(Rectangle newNode) {
+        this.childrenPaths.add(newNode.getPath());
+        this.updateMBR(newNode);
         if (this.childrenPaths.size() > this.M) {
             // Difference with node: here we don't throw an exception, we reset our childrenPaths
-            this.childrenPaths = this.split();
+            Rectangle[] newNodes = this.split();
+            this.childrenPaths = new ArrayList<>();
+            this.childrenPaths.add(newNodes[0].getPath());
+            this.childrenPaths.add(newNodes[1].getPath());
+            this.refreshPath();
         }
+    }
+
+    private void refreshPath() {
+        this.path = RTree.getNewPath();
+        RTree.save(this, path);
     }
 
 
