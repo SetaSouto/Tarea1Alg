@@ -70,15 +70,15 @@ public class Experiment {
         writer.println("Greene split usage percentage: " + greeneTree.usagePercentage());
 
         // Measure search performance in time units
-        long batchSize = 50;
+        long batchSize = 200;
         System.out.println("QUERIES: batch size " + batchSize);
         startTime = System.currentTimeMillis();
         long lastTime = startTime;
         for (int i = 0; i < queries.length; i++) {
-            if (i % batchSize == 0 && i!=0) {
+            if (i % batchSize == 0 && i != 0) {
                 StringBuilder toShow = new StringBuilder(" - Queries until now:").append(i).append("\n");
                 toShow.append(" - Time elapsed from beginning:").append(format(System.currentTimeMillis() - startTime)).append("\n");
-                toShow.append(" - Time last batch:").append(format(System.currentTimeMillis() - lastTime)).append("\n").append("\n");
+                toShow.append(" - Time last batch:").append(format(System.currentTimeMillis() - lastTime)).append("\n");
                 lastTime = System.currentTimeMillis();
                 System.out.println(toShow.toString());
                 writer.println(toShow.toString());
@@ -86,13 +86,13 @@ public class Experiment {
             linearTree.search(queries[i]);
         }
         stopTime = System.currentTimeMillis();
-        System.out.println("Linear split queries time: " + format(stopTime - startTime) + " ms");
-        writer.println("Linear split queries time: " + format(stopTime - startTime) + " ms");
+        System.out.println("Linear split queries time: " + format(stopTime - startTime) + " ms" + "\n");
+        writer.println("Linear split queries time: " + format(stopTime - startTime) + " ms" + "\n");
 
         startTime = System.currentTimeMillis();
         lastTime = startTime;
         for (int i = 0; i < queries.length; i++) {
-            if (i % batchSize == 0 && i!=0) {
+            if (i % batchSize == 0 && i != 0) {
                 StringBuilder toShow = new StringBuilder(" - Queries until now:").append(i).append("\n");
                 toShow.append(" - Time elapsed from beginning:").append(format(System.currentTimeMillis() - startTime)).append("\n");
                 toShow.append(" - Time last batch:").append(format(System.currentTimeMillis() - lastTime)).append("\n");
@@ -112,25 +112,25 @@ public class Experiment {
         lastTime = System.currentTimeMillis();
         startTime = lastTime;
         for (int i = 0; i < queries.length; i++) {
-            if (i % batchSize == 0 && i!=0) {
+            if (i % batchSize == 0 && i != 0) {
                 StringBuilder toShow = new StringBuilder(" - Queries until now:").append(i).append("\n");
                 toShow.append(" - Disc access until now:").append(discAccesses).append("\n");
-                toShow.append(" - Time from beginning:").append(format(System.currentTimeMillis() - startTime)).append("\n");
-                toShow.append(" - Time last batch:").append(format(System.currentTimeMillis() - lastTime)).append("\n");
+                toShow.append(" - Time from beginning:").append(format((System.currentTimeMillis() - startTime))).append("\n");
+                toShow.append(" - Time last batch:").append((format(System.currentTimeMillis() - lastTime))).append("\n");
                 lastTime = System.currentTimeMillis();
                 System.out.println(toShow.toString());
                 writer.println(toShow.toString());
             }
             discAccesses += linearTree.accessCountSearch(queries[i]);
         }
-        System.out.println("Linear split number of accesses: " + discAccesses);
-        writer.println("Linear split number of accesses: " + discAccesses);
+        System.out.println("Linear split number of accesses: " + discAccesses + "\n");
+        writer.println("Linear split number of accesses: " + discAccesses + "\n");
 
         discAccesses = 0;
         lastTime = System.currentTimeMillis();
         startTime = lastTime;
         for (int i = 0; i < queries.length; i++) {
-            if (i % batchSize == 0 && i!=0) {
+            if (i % batchSize == 0 && i != 0) {
                 StringBuilder toShow = new StringBuilder(" - Queries until now:").append(i).append("\n");
                 toShow.append(" - Disc access until now:").append(discAccesses).append("\n");
                 toShow.append(" - Time from beginning:").append(format(System.currentTimeMillis() - startTime)).append("\n");
