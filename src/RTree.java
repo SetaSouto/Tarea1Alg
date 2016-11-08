@@ -17,7 +17,7 @@ public class RTree {
     private Node root;
     private static int elementCounter = 0;
     private static String homePath = "Data//";
-    private static int maxBufferSize = 15000000;
+    private static int maxBufferSize = 10000;
     private static Rectangle[] buffer;
     private static int discAccesses;
 

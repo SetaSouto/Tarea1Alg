@@ -21,7 +21,7 @@ public class Experiment {
     private static PrintWriter writerCSV;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        for (int i = 9; i <= 25; i++) {
+        for (int i = 9; i <= 14; i++) {
             writerCSV = new PrintWriter("Csv//GlobalStats_" + i + "_" + (System.currentTimeMillis() / 10000) + ".csv", "UTF-8");
             StringBuilder header = new StringBuilder("Heuristic").append(",").append("N").append(",");
             header.append("CreationTime").append(",").append("UsagePercentage").append(",").append("QueriesTime").append(",").append("DiscAccess");

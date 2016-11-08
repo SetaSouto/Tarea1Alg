@@ -1,0 +1,7 @@
+------------------
+Test with n=4096
+ 
+Greene Split creation time: 0:0:0:9
+Greene Split usage percentage: 1.0
+Greene Split queries time: 0:0:0:839
+Greene Split number of accesses: 0

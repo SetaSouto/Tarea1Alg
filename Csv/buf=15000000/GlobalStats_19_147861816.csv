@@ -1,0 +1,3 @@
+Heuristic,N,CreationTime,UsagePercentage,QueriesTime,DiscAccess
+Linear Split,524288,40372,0.624633193597561,586575,0
+Greene Split,524288,43225,0.663455310880829,98506,0

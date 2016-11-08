@@ -1,0 +1,7 @@
+------------------
+Test with n=2048
+ 
+Linear Split creation time: 0:0:12:155
+Linear Split usage percentage: 0.5
+Linear Split queries time: 0:0:54:785
+Linear Split number of accesses: 417792
