@@ -21,8 +21,11 @@ public class Experiment {
     private static PrintWriter writerCSV;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        writerCSV = new PrintWriter("GlobalStats.csv", "UTF-8");
-        for (int i = 9; i <= 25; i++) {
+        writerCSV = new PrintWriter("GlobalStats_" + (System.currentTimeMillis() / 10000) + ".csv", "UTF-8");
+        StringBuilder header = new StringBuilder("Heuristic").append(",").append("N").append(",");
+        header.append("CreationTime").append(",").append("UsagePercentage").append(",").append("QueriesTime").append(",").append("DiscAccess");
+        writerCSV.println(header.toString());
+        for (int i = 9; i <= 12; i++) {
             try {
                 experiment((int) Math.pow(2, i));
             } catch (GeneralException e) {
@@ -33,7 +36,8 @@ public class Experiment {
     }
 
     /**
-     * Prints several R-Tree metrics to the standard output for different split heuristics and data sets.
+     * Prints several R-Tree metrics to the standard output for different split heuristics and data
+     * sets.
      *
      * @param n the number of elements to be contained in each tree.
      */
@@ -47,13 +51,14 @@ public class Experiment {
 
     /**
      * Creates metrics for a given tree type.
-     * @param n the number of elements to be inserted.
-     * @param splitter the split heuristics the tree will use.
-     * @param name the name of the tree.
+     *
+     * @param n             the number of elements to be inserted.
+     * @param splitter      the split heuristics the tree will use.
+     * @param name          the name of the tree.
      * @param randomDataset the data to be inserted into the tree.
-     * @param queries the data to be searched in the tree.
-     * @throws GeneralException raised when a Data with no dimensions is inserted.
-     * @throws FileNotFoundException thrown by PrintWriter.
+     * @param queries       the data to be searched in the tree.
+     * @throws GeneralException             raised when a Data with no dimensions is inserted.
+     * @throws FileNotFoundException        thrown by PrintWriter.
      * @throws UnsupportedEncodingException thrown by PrintWriter.
      */
     private static void experimentTree(int n, Splitter splitter, String name, Data[] randomDataset, Data[] queries) throws
