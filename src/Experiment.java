@@ -18,19 +18,26 @@ public class Experiment {
     private static int m = 4 * M / 10;
     private static int maxCoord = 500001;   // 500 000 + 1 to compensate non-inclusion of the bound parameter in nextInt
     private static int maxDim = 100;
+    private static PrintWriter writerCSV;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        for (int i = 10; i <= 25; i ++) {
+        writerCSV = new PrintWriter("GlobalStats_" + (System.currentTimeMillis() / 10000) + ".csv", "UTF-8");
+        StringBuilder header = new StringBuilder("Heuristic").append(",").append("N").append(",");
+        header.append("CreationTime").append(",").append("UsagePercentage").append(",").append("QueriesTime").append(",").append("DiscAccess");
+        writerCSV.println(header.toString());
+        for (int i = 9; i <= 12; i++) {
             try {
                 experiment((int) Math.pow(2, i));
             } catch (GeneralException e) {
                 e.printStackTrace();
             }
         }
+        writerCSV.close();
     }
 
     /**
-     * Prints several R-Tree metrics to the standard output for different split heuristics and data sets.
+     * Prints several R-Tree metrics to the standard output for different split heuristics and data
+     * sets.
      *
      * @param n the number of elements to be contained in each tree.
      */
@@ -44,19 +51,20 @@ public class Experiment {
 
     /**
      * Creates metrics for a given tree type.
-     * @param n the number of elements to be inserted.
-     * @param splitter the split heuristics the tree will use.
-     * @param name the name of the tree.
+     *
+     * @param n             the number of elements to be inserted.
+     * @param splitter      the split heuristics the tree will use.
+     * @param name          the name of the tree.
      * @param randomDataset the data to be inserted into the tree.
-     * @param queries the data to be searched in the tree.
-     * @throws GeneralException raised when a Data with no dimensions is inserted.
-     * @throws FileNotFoundException thrown by PrintWriter.
+     * @param queries       the data to be searched in the tree.
+     * @throws GeneralException             raised when a Data with no dimensions is inserted.
+     * @throws FileNotFoundException        thrown by PrintWriter.
      * @throws UnsupportedEncodingException thrown by PrintWriter.
      */
     private static void experimentTree(int n, Splitter splitter, String name, Data[] randomDataset, Data[] queries) throws
             GeneralException, FileNotFoundException, UnsupportedEncodingException {
 
-        String nameFile = "Stats_n_" + n + (System.currentTimeMillis() / 1000) + ".txt";
+        String nameFile = "Stats//Stats_n_" + n + (System.currentTimeMillis() / 1000) + ".txt";
         PrintWriter writer = new PrintWriter(nameFile, "UTF-8");
 
         System.out.println("------------------");
@@ -71,8 +79,8 @@ public class Experiment {
         RTree tree = generateTree(randomDataset, splitter);
         long stopTime = System.currentTimeMillis();
         long creationTime = (stopTime - startTime);
-        System.out.println(name + " creation time: " + creationTime + " ms.");
-        writer.println(name + " creation time: " + creationTime + " ms.");
+        System.out.println(name + " creation time: " + format(creationTime));
+        writer.println(name + " creation time: " + format(creationTime));
 
         // Measure usage percentage
         double usagePercentage = tree.usagePercentage();
@@ -95,7 +103,7 @@ public class Experiment {
 
         writer.close();
 
-        //csvDump(n, creationTime, usagePercentage, queriesTime, discAccesses);
+        toCSV(name, n, creationTime, usagePercentage, queriesTime, discAccesses);
     }
 
     /**
@@ -137,5 +145,35 @@ public class Experiment {
             }
         }
         return data;
+    }
+
+    /**
+     * Format time in ms to HH:MM:SS:MS
+     *
+     * @param time to farmat.
+     * @return time in HH:MM:SS:MS
+     */
+    private static String format(long time) {
+        long ms = time % 1000;
+        long seg = (time / 1000) % 60;
+        long min = (time / (60 * 1000)) % 60;
+        long hour = (time / (60 * 60 * 1000)) % 60;
+        return (new StringBuilder().append(hour).append(":").append(min).append(":").append(seg).append(":").append(ms)).toString();
+    }
+
+    /**
+     * Writes stats in a CSV file.
+     *
+     * @param heuristic       name of the split heuristic.
+     * @param n               number of elements of the experiment.
+     * @param creationTime    time for creation.
+     * @param usagePercentage usage percentage in of the leafs.
+     * @param queriesTime     time for doing all the queries.
+     * @param discAccess      number of discAccess.
+     */
+    private static void toCSV(String heuristic, int n, long creationTime, double usagePercentage, long queriesTime, int discAccess) throws FileNotFoundException, UnsupportedEncodingException {
+        StringBuilder line = new StringBuilder(heuristic).append(",").append(n).append(",").append(creationTime).append(",");
+        line.append(usagePercentage).append(",").append(queriesTime).append(",").append(discAccess);
+        writerCSV.println(line.toString());
     }
 }
