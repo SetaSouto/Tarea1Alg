@@ -20,7 +20,7 @@ public class Experiment {
     private static int maxDim = 100;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        for (int i = 10; i <= 25; i ++) {
+        for (int i = 10; i <= 25; i++) {
             try {
                 experiment((int) Math.pow(2, i));
             } catch (GeneralException e) {
@@ -143,5 +143,37 @@ public class Experiment {
             }
         }
         return data;
+    }
+
+    /**
+     * Format time in ms to HH:MM:SS:MS
+     *
+     * @param time to farmat.
+     * @return time in HH:MM:SS:MS
+     */
+    private static String format(long time) {
+        long ms = time % 1000;
+        long seg = (time / 1000) % 60;
+        long min = (time / (60 * 1000)) % 60;
+        long hour = (time / (60 * 60 * 1000)) % 60;
+        return (new StringBuilder().append(hour).append(":").append(min).append(":").append(seg).append(":").append(ms)).toString();
+    }
+
+    /**
+     * Writes stats in a CSV file.
+     *
+     * @param heuristic       name of the split heuristic.
+     * @param n               number of elements of the experiment.
+     * @param creationTime    time for creation.
+     * @param usagePercentage usage percentage in of the leafs.
+     * @param queriesTime     time for doing all the queries.
+     * @param discAccess      number of discAccess.
+     */
+    private static void toCSV(String heuristic, int n, long creationTime, double usagePercentage, long queriesTime, int discAccess) throws FileNotFoundException, UnsupportedEncodingException {
+        String nameFile = "GlobalStats.csv"
+        PrintWriter writer = new PrintWriter(nameFile, "UTF-8");
+        StringBuilder line = new StringBuilder(heuristic).append(",").append(n).append(",").append(creationTime).append(",");
+        line.append(usagePercentage).append(",").append(queriesTime).append(",").append(discAccess);
+        writer.println(line.toString());
     }
 }
