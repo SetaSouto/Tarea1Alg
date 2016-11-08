@@ -18,14 +18,6 @@ interface Rectangle {
     List<Data> search(Data C);
 
     /**
-     * Counts the number of nodes visited while performing a Search for the given data.
-     *
-     * @param C rectangle to be used in the search.
-     * @return the number of nodes visited.
-     */
-    public int accessCountSearch(Data C);
-
-    /**
      * Returns the path to the .ser file.
      *
      * @return the path to the .ser file.

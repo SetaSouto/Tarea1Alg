@@ -44,17 +44,6 @@ public class Node implements Rectangle, java.io.Serializable {
     }
 
     @Override
-    public int accessCountSearch(Data C) {
-        int count = 1;
-        Rectangle child;
-        for (String childPath : this.childrenPaths) {
-            child = (Rectangle) RTree.getObj(childPath);
-            if (child.getMBR().intersect(C.getMBR())) count += child.accessCountSearch(C);
-        }
-        return count;
-    }
-
-    @Override
     public String getPath() {
         return this.path;
     }

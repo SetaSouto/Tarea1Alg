@@ -79,21 +79,17 @@ public class Experiment {
         System.out.println(name + " usage percentage: " + usagePercentage);
         writer.println(name + " usage percentage: " + usagePercentage);
 
-        // Measure search performance in time units
+        // Measure search performance
+        int discAccesses = 0;
         startTime = System.currentTimeMillis();
         for (Data data : queries) {
             tree.search(data);
+            discAccesses += tree.getAccessCount();
         }
         stopTime = System.currentTimeMillis();
         long queriesTime = (stopTime - startTime);
         System.out.println(name + " queries time: " + queriesTime + " ms");
         writer.println(name + " queries time: " + queriesTime + " ms");
-
-        // Measure search performance in disc accesses
-        int discAccesses = 0;
-        for (Data data : queries) {
-            discAccesses += tree.accessCountSearch(data);
-        }
         System.out.println(name + " number of accesses: " + discAccesses);
         writer.println(name + " number of accesses: " + discAccesses);
 

@@ -44,11 +44,6 @@ public class Data implements Rectangle, java.io.Serializable {
     }
 
     @Override
-    public int accessCountSearch(Data C) {
-        return 0;
-    }
-
-    @Override
     public String getPath() {
         return this.path;
     }

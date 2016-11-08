@@ -17,8 +17,9 @@ public class RTree {
     private Node root;
     private static int elementCounter = 0;
     private static String homePath = "Data//";
-    private static int maxBufferSize = 15000000;
+    private static int maxBufferSize = 1000;
     private static Rectangle[] buffer;
+    private static int discAccesses;
 
     /**
      * Constructor of the R-Tree.
@@ -73,17 +74,17 @@ public class RTree {
      * @return a list with all the data (rectangles) that intersect with C.
      */
     public List<Data> search(Data C) {
+        discAccesses = 0;
         return this.root.search(C);
     }
 
     /**
-     * Counts the number of nodes visited while performing a Search for the given data.
+     * Counts the number of nodes visited while performing the last Search performed in the tree.
      *
-     * @param C rectangle to be used in the search.
      * @return the number of nodes visited.
      */
-    public int accessCountSearch(Data C) {
-        return this.root.accessCountSearch(C);
+    public int getAccessCount() {
+        return discAccesses;
     }
 
     /**
@@ -117,7 +118,6 @@ public class RTree {
      * Determines the height of the tree.
      *
      * @return the height of the tree.
-     * @throws GeneralException if a node's childrenPaths have different heights.
      */
     public int height() {
         return this.root.height();
@@ -139,6 +139,7 @@ public class RTree {
      */
     private static void serialize(Rectangle c) {
         try {
+            discAccesses++;
             FileOutputStream fileOut = new FileOutputStream(c.getPath());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(c);
@@ -185,6 +186,7 @@ public class RTree {
     private static Object deserialize(String path) {
         Object e = null;
         try {
+            discAccesses++;
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             e = in.readObject();
