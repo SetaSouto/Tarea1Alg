@@ -29,6 +29,11 @@ public class Experiment {
         }
     }
 
+    /**
+     * Prints several R-Tree metrics to the standard output for different split heuristics and data sets.
+     *
+     * @param n the number of elements to be contained in each tree.
+     */
     private static void experiment(int n) throws FileNotFoundException, UnsupportedEncodingException, GeneralException {
         Data[] randomDataset = generateData(n);
         Data[] queries = generateData(n / 10);
@@ -38,10 +43,15 @@ public class Experiment {
     }
 
     /**
-     * Prints several R-Tree metrics to the standard output for different split heuristics and data
-     * sets.
-     *
-     * @param n the number of elements to be contained in each tree.
+     * Creates metrics for a given tree type.
+     * @param n the number of elements to be inserted.
+     * @param splitter the split heuristics the tree will use.
+     * @param name the name of the tree.
+     * @param randomDataset the data to be inserted into the tree.
+     * @param queries the data to be searched in the tree.
+     * @throws GeneralException raised when a Data with no dimensions is inserted.
+     * @throws FileNotFoundException thrown by PrintWriter.
+     * @throws UnsupportedEncodingException thrown by PrintWriter.
      */
     private static void experimentTree(int n, Splitter splitter, String name, Data[] randomDataset, Data[] queries) throws
             GeneralException, FileNotFoundException, UnsupportedEncodingException {
