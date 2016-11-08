@@ -21,18 +21,18 @@ public class Experiment {
     private static PrintWriter writerCSV;
 
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        writerCSV = new PrintWriter("GlobalStats_" + (System.currentTimeMillis() / 10000) + ".csv", "UTF-8");
-        StringBuilder header = new StringBuilder("Heuristic").append(",").append("N").append(",");
-        header.append("CreationTime").append(",").append("UsagePercentage").append(",").append("QueriesTime").append(",").append("DiscAccess");
-        writerCSV.println(header.toString());
-        for (int i = 9; i <= 12; i++) {
+        for (int i = 9; i <= 25; i++) {
+            writerCSV = new PrintWriter("Csv//GlobalStats_" + i + "_" + (System.currentTimeMillis() / 10000) + ".csv", "UTF-8");
+            StringBuilder header = new StringBuilder("Heuristic").append(",").append("N").append(",");
+            header.append("CreationTime").append(",").append("UsagePercentage").append(",").append("QueriesTime").append(",").append("DiscAccess");
+            writerCSV.println(header.toString());
             try {
                 experiment((int) Math.pow(2, i));
             } catch (GeneralException e) {
                 e.printStackTrace();
             }
+            writerCSV.close();
         }
-        writerCSV.close();
     }
 
     /**
@@ -96,8 +96,8 @@ public class Experiment {
         }
         stopTime = System.currentTimeMillis();
         long queriesTime = (stopTime - startTime);
-        System.out.println(name + " queries time: " + queriesTime + " ms");
-        writer.println(name + " queries time: " + queriesTime + " ms");
+        System.out.println(name + " queries time: " + format(queriesTime));
+        writer.println(name + " queries time: " + format(queriesTime));
         System.out.println(name + " number of accesses: " + discAccesses);
         writer.println(name + " number of accesses: " + discAccesses);
 
