@@ -10,4 +10,4 @@ for buf in buffers:
     for filePath in os.listdir(path):
         csvs.append(pd.read_csv(path + filePath))
     csv = pd.concat(csvs)
-    csv.to_csv();
+    csv.to_csv("bigCSV.csv");
