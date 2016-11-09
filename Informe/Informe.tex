@@ -1,0 +1,518 @@
+% CREACIÓN DEL DOCUMENTO, FUENTE E IDIOMA
+\documentclass[letterpaper,11pt]{article} % Documento clase artículo, tamaño letra 11pt
+\usepackage[utf8]{inputenc}               % Codificación UTF-8
+\usepackage[T1]{fontenc}                  % Soporta caracteres acentuados
+\usepackage{lmodern}                      % Tipografía moderna
+\usepackage[spanish]{babel}               % Define el idioma del documento en español
+
+% INFORMACIÓN DEL DOCUMENTO
+\newcommand{\nombredelinforme}{Tarea 1}
+\newcommand{\temaatratar}{Memoria secundaria: R-Tree}
+\newcommand{\fecharealizacion}{\today}
+\newcommand{\fechaentrega}{\today}
+
+\newcommand{\nombredelcurso}{Diseño y análisis de algoritmos}
+\newcommand{\codigodelcurso}{CC-4102}
+
+\newcommand{\nombreuniversidad}{Universidad de Chile}
+\newcommand{\nombrefacultad}{Facultad de Ciencias Físicas y Matemáticas}
+\newcommand{\departamentouniversidad}{Departamendo de Ciencias de la Computación}
+\newcommand{\imagendeldepartamento}{images/dcc.pdf}
+\newcommand{\imagendeldepartamentoescl}{0.2}
+\newcommand{\localizacionuniversidad}{Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\newcommand{\tablaintegrantes}{
+\begin{minipage}{0.965\textwidth}
+	\begin{flushright}
+		\begin{tabular}{ll}
+		Integrantes: 
+			& \begin{tabular}[t]{@{}l@{}}
+				Fabián Souto H. \\
+				Francisco Clavero H.
+			\end{tabular} \\
+		Profesores: 
+			& \begin{tabular}[t]{@{}l@{}}
+				Gonzalo Navarro
+			\end{tabular} \\
+		Auxiliares: 
+			& \begin{tabular}[t]{@{}l@{}}
+				Jorge Bahamonde
+			\end{tabular}\\
+		Ayudantes: 
+			& \begin{tabular}[t]{@{}l@{}}
+				Sebatián Ferrada \\
+				Willy Maikowski
+			\end{tabular}\\
+		& \\
+		\multicolumn{2}{l}{Fecha de entrega: \fechaentrega} \\
+		\multicolumn{2}{l}{\localizacionuniversidad}
+		\end{tabular}
+	\end{flushright}
+\end{minipage}}
+
+%BEGIN_FOLD
+% CONFIGURACIONES
+\newcommand{\defaultfontsize}{20pt}               % Tamaño de la fuente
+\newcommand{\defaultnewlinesize}{20pt}            % Tamaño del salto de línea
+\newcommand{\defaultinterlind}{1.2}               % Interlineado por defecto
+\newcommand{\defaultimagefolder}{images/}         % Directorio de las imágenes 
+\newcommand{\tipofuentetitulo}{\huge}             % Tamaño de los títulos
+\newcommand{\tipofuentesubtitulo}{\Large}         % Tamaño de los subtítulos
+\newcommand{\tipofuentetituloi}{\huge}            % Tamaño de los títulos en el índice
+\newcommand{\tipofuentesubtituloi}{\large}        % Tamaño de los subtítulos en el índice
+\newcommand{\tiporeferencias}{apa}                % Tipo de referencias
+\newcommand{\nomblttablas}{Lista de Tablas}       % Nombre de la lista de tablas
+\newcommand{\nombltfiguras}{Lista de Figuras}     % Nombre de la lista de figuras
+\newcommand{\nombltcontend}{Índice de Contenidos} % Nombre del índice de contenidos
+\newcommand{\nombltwtablas}{Tabla}                % Nombre de las tablas
+\newcommand{\nombltwfigura}{Figura}               % Nombre de las figuras
+\newcommand{\defaultcaptionmargin}{2.9}           % Márgenes de las leyendas por defecto
+\newcommand{\defaultpagemarginleft}{2.25}          % Margen izquierdo de las páginas [cm]
+\newcommand{\defaultpagemarginright}{2.25}         % Margen derecho de las páginas [cm]
+\newcommand{\defaultpagemargintop}{2.15}          % Margen superior de las páginas [cm]
+\newcommand{\defaultpagemarginbottom}{2.15}       % Margen inferior de las páginas [cm]
+\newcommand{\defaultfirstpagemargintop}{3.2}      % Margen superior de la portada [cm]
+\newcommand{\defaultmarginfloatimages}{-13pt}     % Margen sup. de figuras flotantes [pt]
+\newcommand{\defaultmargintopimages}{-0.2cm}      % Margen sup. de las figuras [cm]
+\newcommand{\defaultmarginbottomimages}{-0.2cm}   % Margen inf. de las figuras [cm]
+
+% LIBRERÍAS INDEPENDIENTES
+\usepackage[ampersand]{easylist}       % Listas
+\usepackage{amsmath}                   % Fórmulas matemáticas
+\usepackage{amssymb}                   % Símbolos matemáticos
+%\usepackage{amsthm}                   % Teoremas matemáticos
+\usepackage{caption}                   % Leyendas
+\usepackage{color}                     % Colores
+\usepackage{datetime}                  % Fechas
+\usepackage{enumitem}                  % Enumeraciones
+\usepackage{fancyhdr}                  % Encabezados y pié de páginas
+\usepackage{float}                     % Administrador de posiciones de objetos
+\usepackage{geometry}                  % Dimensiones y geometría del documento
+\usepackage{graphicx}                  % Propiedades extra para los gráficos
+\usepackage[makeroom]{cancel}          % Cancelar términos en fórmulas
+\usepackage[norule]{footmisc}          % Elimina la barra vertical de las notas
+\usepackage{multicol}                  % Múltiples columnas
+\usepackage{lipsum}                    % Permite crear textos dummy
+\usepackage{longtable}                 % Permite utilizar tablas en varias hojas
+\usepackage{listings}                  % Permite añadir código fuente
+\usepackage{setspace}                  % Cambia el espacio entre líneas
+\usepackage{subfig}                    % Permite agrupar imágenes
+\usepackage{tikz}                      % Permite dibujar
+\usepackage{titlesec}                  % Cambia el estilo de los títulos
+\usepackage{url}                       % Permite añadir enlaces
+%\usepackage[version=4]{mhchem}        % Fórmulas químicas
+\usepackage{wrapfig}                   % Permite comprimir imágenes
+
+% LIBRERÍAS DEPENDIENTES
+\usepackage{chngcntr}                  % Agrega números de secciones a las leyendas
+\usepackage{epstopdf}                  % Convierte archivos .eps a pdf
+\usepackage[hidelinks]{hyperref}       % Permite añadir enlaces y referencias
+\usepackage{multirow}                  % Agrega nuevas opciones a las tablas
+
+% CARGA DE MÓDULOS PARA LIBRERÍAS
+\usetikzlibrary{babel}                 % Asociado a tikz
+
+% DECLARACIÓN DE FUNCIONES
+\newcommand{\quotes}[1]{``#1''}        % Insertar cita
+\newcommand{\quotesit}[1]{\textit{\quotes{#1}}} % Insertar cita en itálico
+\newcommand{\setcaptionmargincm}[1]{\captionsetup{margin=#1cm}} % Cambiar el margen
+\newcommand{\setpagemargincm}[4]{      % Cambia márgenes de las páginas [cm]
+	\newgeometry{left=#1cm, top=#2cm, right=#3cm, bottom=#4cm}}
+\newcommand{\newp}{                    % Inserta nueva línea
+	\hbadness=10000 \vspace{\defaultnewlinesize} \par}
+\newcommand{\newpar}[1]{               % Nuevo párrafo
+	\hbadness=10000 #1 \newp}
+\newcommand{\newparnl}[1]{#1 \par}     % Nuevo párrafo sin nueva linea al final
+\newcommand{\lpow}[2]{{#1}_{#2}}       % Insertar sub-índice
+\newcommand{\pow}[2]{{#1}^{#2}}        % Insertar elevado
+\newcommand{\fracpartial}[2]{          % Fracción de derivadas parciales af/ax
+	\frac{\partial #1}{\partial #2}}
+\newcommand{\fracdpartial}[2]{         % Fracción de derivadas parciales dobles a^2/ax^2
+	\frac{{\partial}^{2} #1}{\partial {#2}^{2}}}
+\newcommand{\fracnpartial}[3]{         % Fracción de derivadas parciales en n a^n/ax^n
+	\frac{{\partial}^{#3} #1}{\partial {#2}^{#3}}}
+\newcommand{\fracderivat}[2]{          % Fracción de derivadas df/dx
+	\frac{d #1}{d #2}}
+\newcommand{\fracdderivat}[2]{         % Fracción de derivadas dobles d^2/dx^2
+	\frac{{d}^{2} #1}{d {#2}^{2}}}
+\newcommand{\fracnderivat}[3]{         % Fracción de derivadas en n d^n/dx^n
+	\frac{{d}^{#3} #1}{d {#2}^{#3}}}
+\newcommand{\newtitleanum}[1]{         % Insertar un título sin número
+	\addcontentsline{toc}{section}{#1} \section*{#1}}
+\newcommand{\newsubtitleanum}[1]{      % Insertar un subtítulo sin número
+	\addcontentsline{toc}{subsection}{#1} \subsection*{#1}}
+\newcommand{\newtitleanumnoi}[1]{      % Insertar un título sin num. fuera del índice
+	\section*{#1}}
+\newcommand{\newsubtitleanumnoi}[1]{   % Insertar un subtítulo sin num. fuera del índice
+	\subsection*{#1}}
+\newcommand{\insertequation}[2][]{     % Insertar una ecuación
+	\vspace{-0.2cm}
+	\begin{equation}
+		\text{#1} #2
+	\end{equation}}
+\newcommand{\insertequationcaptioned}[3][]{ % Insertar una ecuación con leyenda
+	\vspace{-0.1cm}
+	\begin{equation}
+		\text{#1} #2
+	\end{equation}
+	\begin{center}
+		\vspace{-0.15cm}
+		\textit{#3} \par
+	\end{center}}
+\newcommand{\insertimage}[4][]{        % Insertar una imagen
+	\vspace{\defaultmargintopimages}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[#3]{\defaultimagefolder#2}
+		\caption{#4 #1}
+	\end{figure}
+	\vspace{\defaultmarginbottomimages}}
+\newcommand{\insertimageboxed}[4][]{   % Insertar una imagen con recuadro
+	\vspace{\defaultmargintopimages}
+	\begin{figure}[H]
+		\centering
+		\fbox{\includegraphics[#3]{\defaultimagefolder#2}}
+		\caption{#4 #1}
+	\end{figure}
+	\vspace{\defaultmarginbottomimages}}
+\newcommand{\insertdoubleimage}[8][]{  % Insertar una imagen doble
+	\captionsetup{margin=0.5cm}
+	\vspace{\defaultmargintopimages}
+	\begin{figure}[H] \centering
+		\subfloat[#4]{
+			\includegraphics[#3]{\defaultimagefolder#2}}
+		\hspace{0.1cm}
+		\subfloat[#7]{
+			\includegraphics[#6]{\defaultimagefolder#5}}
+		\caption{#8 #1}
+	\end{figure}
+	\vspace{\defaultmarginbottomimages}
+	\setcaptionmargincm{\defaultcaptionmargin}}
+\newcommand{\insertimageleft}[5][]{    % Insertar una imagen a la izquierda
+	\begin{wrapfigure}[#5]{l}{#3\textwidth}
+		\setcaptionmargincm{0}
+		\vspace{\defaultmarginfloatimages}
+		\centering\includegraphics[width=\linewidth]{\defaultimagefolder#2}
+		\caption{#4 #1}
+		\setcaptionmargincm{\defaultcaptionmargin}
+	\end{wrapfigure}}
+\newcommand{\insertimageright}[5][]{   % Insertar una imagen a la derecha
+	\begin{wrapfigure}[#5]{r}{#3\textwidth}
+		\setcaptionmargincm{0}
+		\vspace{\defaultmarginfloatimages}
+		\centering\includegraphics[width=\linewidth]{\defaultimagefolder#2}
+		\caption{#4 #1}
+		\setcaptionmargincm{\defaultcaptionmargin}
+	\end{wrapfigure}}
+
+% DECLARACIÓN DE AMBIENTES Y ESTILOS
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstdefinestyle{C}{ % Estilo de lenguaje C
+	language=C,
+  	numbers=left,
+  	stepnumber=1,        
+  	numbersep=5pt,
+  	backgroundcolor=\color{white}, 
+  	showspaces=false,
+  	showstringspaces=false,
+  	showtabs=false,
+  	tabsize=2,
+  	captionpos=b,
+  	breaklines=true,
+  	breakatwhitespace=true,
+  	title=\lstname}
+\lstdefinestyle{Java}{ % Estilo de lenguaje Java
+	language=Java,
+	frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3}
+\lstdefinestyle{Matlab}{ % Estilo de lenguaje Matlab
+	language=Matlab,
+	breaklines=true,
+	morekeywords={matlab2tikz},
+	keywordstyle=\color{blue},
+	morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+	identifierstyle=\color{black},
+	stringstyle=\color{mylilas},
+	commentstyle=\color{mygreen},
+	showstringspaces=false,
+	numbers=left,
+	numberstyle={\tiny \color{black}},
+	numbersep=9pt,
+	emph=[1]{for,end,break},emphstyle=[1]\color{red}}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\counterwithin{equation}{section}          % Añade número de sección a las ecuaciones
+\counterwithin{figure}{section}            % Añade número de sección a las figuras
+\counterwithin{table}{section}             % Añade número de sección a las tablas
+\bibliographystyle{\tiporeferencias}       % Estilo APA para las referencias
+\setcaptionmargincm{\defaultcaptionmargin} % Margen por defecto
+\renewcommand{\baselinestretch}{\defaultinterlind} % Ajuste del interlineado
+\ListProperties(                           % Propiedades de las listas
+	Hide=100,
+	Hang=true,
+	Progressive=3ex,
+	Style*=-- ,
+	Style2*=$\bullet$,
+	Style3*=$\circ$,
+	Style4*=\tiny$\blacksquare$)
+\hypersetup{
+	%pdfauthor={Author},
+	pdftitle={\nombredelinforme},
+	pdfsubject={\temaatratar},
+	pdfkeywords={\nombreuniversidad, \nombredelcurso,
+	\codigodelcurso, \localizacionuniversidad},
+	pdfproducer={LaTeX},
+	pdfcreator={pdfLaTeX}}
+\setlength{\headheight}{54pt}
+\makeatletter \renewenvironment{thebibliography}[1] % Bibliografía en 2 columnas
+{\begin{multicols}{2}[\section*{\refname}]
+	\@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}
+	\list{\@biblabel{\@arabic\c@enumiv}}
+	{\settowidth\labelwidth{\@biblabel{#1}}
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\@openbib@code
+		\usecounter{enumiv}
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}}
+	\sloppy
+	\clubpenalty 4000
+	\@clubpenalty \clubpenalty
+	\widowpenalty 4000
+	\sfcode`\.\@m}
+	{\def\@noitemerr
+		{\@latex@warning{Empty `thebibliography' environment}}
+		\endlist\end{multicols}}
+\makeatother
+
+%END_FOLD
+\begin{document}
+%BEGIN_FOLD
+
+% PORTADA
+\newpage
+\renewcommand{\thepage}{Portada}
+\setpagemargincm{\defaultpagemarginleft}{\defaultfirstpagemargintop}
+{\defaultpagemarginright}{\defaultpagemarginbottom}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nombreuniversidad \\ \nombrefacultad \\ \departamentouniversidad}
+\fancyhead[R]{\includegraphics[scale=\imagendeldepartamentoescl]{\imagendeldepartamento}}
+\vspace*{5cm}
+\begin{center}
+	\huge  {\nombredelcurso} \\
+	\vspace{1cm}
+	\Huge {\nombredelinforme} \\
+	\vspace{0.3cm}
+	\large {\temaatratar}
+\end{center}
+\vfill
+\tablaintegrantes
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\newpage
+\pagenumbering{Roman} % Estilo de caracteres romanos en minúscula
+\setcounter{page}{1}
+\setpagemargincm{\defaultpagemarginleft}{\defaultpagemargintop}
+{\defaultpagemarginright}{\defaultpagemarginbottom}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\renewcommand{\listfigurename}{\nombltfiguras}       % Nombre del índice de figuras
+\renewcommand{\listtablename}{\nomblttablas}         % Nombre del índice de tablas
+\renewcommand{\contentsname}{\nombltcontend}         % Nombre del índice
+\renewcommand{\tablename}{\nombltwtablas}            % Nombre de la leyenda de las tablas
+\renewcommand{\figurename}{\nombltwfigura}           % Nombre de la leyenda de las figuras
+\pagestyle{fancy} \fancyhf{}                         % Se crean los headers y footers
+\fancyhead[L]{\nouppercase{\rightmark}}              % Header izq, nombre sección
+\fancyhead[R]{\small \rm \thepage}                   % Header der, número página
+\fancyfoot[L]{\small \rm \textit{\nombredelinforme}} % Footer izq, título del informe
+\fancyfoot[R]{\small \rm \textit{\codigodelcurso \ \nombredelcurso}} % Footer der, curso
+\renewcommand{\headrulewidth}{0.5pt}                 % Ancho de la barra del header
+\renewcommand{\footrulewidth}{0.5pt}                 % Ancho de la barra del footer
+
+%% ABSTRACT- RESUMEN
+%\titleformat*{\section}{\tipofuentetitulo \bfseries}
+%\newtitleanum{Resumen}
+%\lipsum[1]
+
+% TABLA DE CONTENIDOS
+\newpage
+\titleformat*{\section}{\tipofuentetituloi \bfseries}       % Tamaño de los títulos
+\titleformat*{\subsection}{\tipofuentesubtituloi \bfseries} % Tamaño de los títulos
+\tableofcontents                                            % Tabla de contenidos
+\listoffigures                                              % Índice de figuras
+\listoftables                                               % Índice de tablas
+
+% CONFIGURACIONES FINALES - INICIO DE LAS SECCIONES
+\newpage
+\titleformat*{\section}{\tipofuentetitulo \bfseries}
+\titleformat*{\subsection}{\tipofuentesubtitulo \bfseries}
+\setcounter{page}{1}
+\renewcommand{\thepage}{\arabic{page}}
+%END_FOLD
+
+% ================================ INICIO DEL DOCUMENTO ================================
+
+%DOCUMENTO
+\section{Introducción}
+
+Un R-Tree es un árbol parecido a un B-Tree, que sirve para poder manejar rectángulos en memoria secundaria. Se puede \textit{buscar} e \textit{insertar} rectángulos. Por ejemplo la búsqueda, dado un rectángulo \textit{C} retorna la cantidad de rectángulos que intersectan con él.\\
+El árbol debe preservar un conjunto de invariantes:
+\begin{itemize}
+	\item Cada nodo de la estructura es un rectángulo: el MBR (\textit{minimum boundig rectangle}) de los rectángulos que cuelgan de él.
+	\item Los datos se encuentran en las hojas.
+	\item Cada nodo del R-Tree almacena al menos $m$ rectángulos (llamaremos a este el invariante $m$) y no puede tener más de $M$ rectángulos (lo llamaremos invariante $M$).
+	\item Todas las hojas están a la misma profunidad en el árbol.
+\end{itemize}
+
+El objetivo de este informe es mostrar una implementación de un R-Tree, realizada en lenguaje \textit{Java} en donde se ocupan dos heurísticas distintas para la inserción: \textit{Linear Split} y \textit{Greene's Split}. \\
+Además será motivo de interés poder analizar el comportamiento del árbol con estas dos heruísticas distintas, analizando la operación de búsqueda después de haber hecho las inserciones ocupando alguna de las dos.
+\\
+Parte importante, para hacer una implementación más eficiente de esta estructura, es poder agregar un \textit{buffer} que permite tener una cantidad fija de nodos del árbol en memoria, así evitando acceder a disco cada vez que se necesite una parte de él. Se analizarán las diferencias respecto a no tener un \textit{buffer} o similar a tener uno de tamaño 1.
+
+Posterior a explicar la implementación, se expondrán experimentos llevados a cabo con cantidades de datos superiores a $2^{9}$ generados al azar, respetando cotas inferiores y superiores; luego se estudiarán en profundidad y se analizarán los resultados de forma de hacer un contraste con las hipótesis creadas.
+
+\newpage
+\section{Implementación}
+
+La implementación del árbol consta de 9 clases y 2 interfaces. Las siguientes secciones abarcan en mayor detalle cada una de éstas.
+
+	\subsection{Interfaces}
+		\subsubsection{Rectangle}
+			Diremos que toda componente del árbol es un rectángulo, pues la raíz tiene un MBR (\textit{Minimum Bounding Rectangle}) que es un rectángulo, lo mismo con cualquier nodo y obviamente un dato es en sí mismo un rectángulo.
+			
+			Todo rectángulo tiene un MBR, se puede buscar dado un rectángulo, se puede contar los accesos a disco que hace dada la búsqueda de un rectángulo y se puede optener su \textit{path}, que es el path hacia su archivo en disco.
+			
+		\subsubsection{Splitter}
+			El splitter es el encargado de manejar los casos de \textit{overflow}. Cuando un nodo tenga \textit{overflow} acude a su splitter para que pueda solucionar el problema. Implementa alguna heurística. Se encarga de mantener el invariante $M$ y el invariante $m$.
+			
+			Un splitter lo único que hace es \textit{split} dada una lista de nodos/datos que repartir y dos nodos donde insertarlos.
+	
+	\subsection{Clases}
+		\subsubsection{Data}
+			Es una clase que implementa la interfaz \textit{Rectangle} y representa un dato, es decir, un rectángulo en concreto. Dentro de las cosas que puede hacer es obtener su área, ver si intersecta con otro rectángulo dado o si es igual a otro rectángulo (coinciden en dimensiones y coordenadas).
+		
+		\subsubsection{Node}
+			Es la clase \textit{core} del árbol, implementa \textit{Rectangle}. Un nodo sabe cuales son los $m$ y $M$ que debe tener para cumplir sus invariantes, sabe quién es su \textit{Splitter}, sabe el \textit{path} a sus hijos (para cargarlos a memoria) y sabe su propio \textit{path}.
+			
+			Dentro de las cosas importante que puede hacer un \textit{Node}, aparte de implementar a \textit{Rectangle}, es calcular cuánto crecerá su MBR si insertamos un rectángulo dado, insertar un rectángulo dado (llama recursivamente al hijo que tiene que crecer menos), hacer \textit{split} en caso de overflow, actualizar su MBR dada una inserción, etc.
+			
+		\subsubsection{RootNode}
+			Hereda de \textit{Node}. Se implementó esta clase pues en caso de overflow, la clase node arroja una excepción, en donde el padre es el encargado de mandarlo a hacer el split y recibir los dos nuevos nodos que contienen lo que contenía el nodo con overflow. ¿Y qué hacemos en la raíz? Esa es la función de esta clase, que simplemente en caso de tener overflow, él mismo se actualiza y setea sus antiguos hijos a los dos nuevos que contienen todos los datos de la antigua raíz del overflow, así el árbol crece hacia la raíz.
+		
+		\subsubsection{LeafNode}
+			Hereda de \textit{Node}. Dentro de las cosas que hace, la mayor diferencia con \textit{Node}, es la inserción, pues en este caso no puede insertar en el rectángulo que menos crezca, pues esos ya son datos, no son nodos. Entonces es el encargado de tomar el nuevo \textit{Data}, guardarlo en disco, agregarlo a sus hijos, los datos que tiene ese nodo, y en caso de overflow generar la excepción.
+			
+		\subsubsection{RTree}
+			Es la clase que se ocupa para manejar un R-Tree. Obviamente sabe sus parámetros $m$, $M$, \textit{Splitter} y quién es su raíz. Tiene variables y métodos \textit{static} de forma que cualquier nodo pueda llamar a las funciones para el manejo de los accesos a disco.
+			
+			Dentro de las cosas que permite están:
+			\begin{itemize}
+				\item Obtener un nuevo \textit{path} para algún archivo nuevo que se debe guardar en disco.
+				\item Insertar datos en el árbol.
+				\item Realizar la operación de búsqueda (simplemente hace \textit{this.root.search(C)}).
+				\item Realizar estadísticas: contar accesos a disco, cantidad de rectángulos, cantidad de nodos, altura y porcentaje de uso.
+			\end{itemize}
+			
+			Pero lo más importante, es que maneja los accesos a disco y al \textit{buffer}. Tiene un \textit{buffer} de tamaño fijo que permite tener cierta cantidad de nodos en memoria, permitiendo ahorrar tiempo. Si algún nodo quiere acceder a algún objeto tiene que llamar \textit{RTree.getObj(path)}, donde \textit{path} es un \textit{String} que representa la ubicación del archivo que se quiere leer para carga el objeto. De esta manera vemos si el objeto está en el buffer (en tiempo constante, cada archivo tien un index) y si está lo retornamos, si no, lo \textit{deserializamos} (cargamos en memoria el objeto tal cual se guardó (serializó) la última vez).
+			
+			Algo similar es lo que pasa con \textit{save}, donde le pasamos un \textit{Rectangle C} y lo guarda en el \textit{buffer}, viendo antes si lo que estaba en el buffer era él o no, en caso de que no fuera él ahí recién guardamos (\textit{serializamos}) el objeto en memoria secundaria.
+			
+		\subsubsection{Otras clases}
+			Además de las clases mencionadas tenemos las clases que implementaron los Splitters, una implementa Linear Split y otra implementa Greene's Split. También está una clase \textit{GeneralException} que ocupamos para arrojar excepciones generales, principalmente para los casos de overflow. Y como último está la clase de experimentación, que abordaremos en esa sección y una carpeta que incluye diversos test que ocupamos para ir comprobando la funcionalidad de nuestra implementación.
+			
+\section{Experimentación}
+
+	Para la experimentación se creó una clase \textit{Experiment}, que permite generar logs de los experimentos, mostrar en pantalla las estadísticas que lleva y además generar un archivo CSV para poder hacer un análisis más profundo con \textit{python}. Tiene métodos para formatear la muestra de tiempo, para generar datos y generar árboles.
+	
+	Un \textit{experiment} recibe la cantidad de datos con los cuales se desea experimentar y llama a \textit{experimentTree} donde ejecuta el experimento sobre un árbol. Lo hace dos veces para probar con el mismo $n$ (cantidad de datos) pero con las dos heurísticas.
+	
+	El experimento primero toma el tiempo de creación del árbol (insertar todos los datos), luego calcula el espacio de uso promedio, después toma el tiempo de cuanto demora en completar todas las \textit{queries} y finalmente calcula cuantos accesos a disco se tuvieron que hacer para completar esas \textit{queries}.
+	
+	\subsection{Hipótesis}
+	
+		\subsubsection{Cota superior inserción}
+			Se tienen $n$ elementos en el árbol. Se desea insertar un nuevo elemento. Para insertar el elemento se debe llegar a una hoja, si hay $n$ elementos en el árbol entonces tiene altura $\log_{M}(n)$, eso toma llegar a una hoja. Ahora para elegir la hoja correcta por la cual bajar se debe iterar por sobre todos los hijos del nodo para elegir el que corresponde (el que su MBR aumenta mínimamente), en el peor caso tiene $M$ hijos sobre los cuales iterar. O sea llegar a una hoja toma $M\cdot \log_{M}(n)$, tenemos que iterar sobre $M$ hijos $\log_{M}(n)$ veces.
+			
+		\subsubsection{Peor caso inserción}
+			Una cota fácil sería pensar que tenemos que insertar $n$ hijos, entonces tenemos $O(nM \log_{M}(n))$, pero no resulta muy preciso.
+			
+			Algo más concreto es ver que el nodo $i+1$ para insertarse toma (en el peor caso) $M \log_{M}(i)$. Por lo tanto sumando desde el primero al último resulta:
+			$$ M \sum_{i=2}^{n} \log_{M}(i-1)$$
+			$$ M \log_{M}(\prod_{i=1}^{n-1} i)$$
+			$$ M \log_{M}((n-1)!)$$
+			
+			Luego, ocupando \textit{Stirling} sabeos que $(n-1)! = O(n^{2})$:
+			
+			$$O(M \log_{M}(n^{2}))$$
+			
+			Pero a esto no le hemos sumado el costo de que ocurra un split. Ambas heurísticas ocupadas cargan una sola vez los datos en memoria que necesitan para hacer el split y luego escriben los nodos resultantes, o sea hacen $(M+1+2)=(M+3)= O(M)$ I/Os.
+			
+			Una opción fácil también sería pensar que se hace split cada vez que insertamos un nodo, pero esto no se acerca mucho a la realidad, busquemos un peor caso más ajustado.
+			
+			En el peor caso, el adversario quiere que hagamos la mayor cantidad de \textit{splits}. Por lo tanto nos dará elementos para insertarlos uno tras otro de manera que al bajar por el árbol se escoge el nodo más lleno y se inserta en la hoja más llena. Los datos insertados son tales que al ocurrir un split los nodos se reparten los hijos de forma que uno de los dos queda como el peor caso posible, o sea con $(M-m)$ hijos, con lo cual con $m$ hijos más se llenará de nuevo.
+			
+			Ahora podemos ver que cada $m$ inserciones se produce un \textit{split} en la hoja más cargada. Siguiendo este régimen de inserción veamos cuantos splits se requieren para armar un árbol de $n$ elementos.
+			
+			Notemos que un árbol de $n$ elementos con este régimen de inserción tendrá una altura $h = O(\log_{M}(n))$.
+			
+			Digamos que el costo de \textit{split} de una hoja será $s(1) = O(M)$ y que ocurre cada $m$ inserciones. Así el \textit{split} del padre de una hoja, será $s(2) = m\cdot s(1) = O(mM)$ tomando en cuenta todos los splits que tuvieron que pasar para llegar a él; esto es que el split del padre de una hoja cuesta $m$ splits de su hija, así para tener un árbol de altura 2 tenemos que hacer $s(2)$ y pagar esos splits. Análogamente podemos ver que $s(i) = m^{i-1}M$.
+			
+			Sabiendo que la raíz será el nivel $h$, para obtener un árbol de altura $h = O(\log_{M}(n))$ tenemos que hacer todos los splits que cueste llegar a hacer $s(h)$, o sea tenemos que pagar $s(h) = s(\log_{M}(n)) = m^{\log_{M}(n)-1}M$.\\
+			
+			De esta forma podemos ver que el costo de crear un árbol será el costo de insertar todos los elementos (toma $O(M\log_{M}(n^{2})$) más todos los splits que se tuvieron que hace que cuestan $s(\log_{M}(n))$. El costo final será:
+			
+			$$ O(M \log_{M}(n^{2}) + m^{\log_{M}(n)-1}M) $$
+			
+		\subsubsection{Peor caso queries}
+			En el peor de los casos está intersectado con todos, o sea debe cargar todos los nodos del árbol, que son $M^{h} = M^{\log_{M}(n)}$, por lo que el costo en el peor caso será $O(M^{\log_{M}(n)})$.
+			
+	\subsection{Resultados}
+	
+		\subsubsection{Resultados numéricos}
+			
+		\subsubsection{Gráficos}
+		
+		\subsubsection{Análisis y conclusión}
+		
+			El primer punto a notar, es que como todos podíamos esperar entre mayor el $n$ mayores son los accesos a disco y mayor es la demora.
+			\\
+			Para nuestra sorpresa, las cotas inferiores que habíamos pensado no se ajustaron bien a los resultados experimentales.
+			
+			En el caso de las consultas es difícil poder determinar una cota justa, puesto que deberíamos calcular la esperanza de la cantidad de elementos que se intersectan con un rectángulo generado al azar. Esa sería la cantidad de accesos a disco. Pero podemos ver que nunca supera el peor caso que mencionamos, que es acceder a todos los nodos.
+			
+			Esto se puede notar en el gráfico \ref{graficoQueries}, donde al dividir por esta cota superior se invierten los puntos. Esto quiere decir que crecía más lento que en el peor caso. Nuestra cota inferior resultó en un caso que practicamente no sucede nunca.
+			\\
+			En el caso del tiempo de creación es donde nos llevamos la mayor sorpresa. Probamos con el peor caso que habíamos calculado que era más justo que el fácil pero resultaba que la curva se mantenía en proporciones, indicando que funcionaba peor que ese peor caso. Después probamos con el peor caso más fácil, que es pensar que hace la peor inserción posible las $n$ veces y además por cada inserción hacía un \textit{split}, pero para nuestra no grata sorpresa, esto aún quedaba corto.
+			
+			Una hipótesis es que no hayamos considerado el tiempo de CPU del algoritmo, puesto como solo tomábamos en cuenta los I/Os. Puede ser que Java y su manera de procesar la estructura haya llevado a que aportara una parte no despreciable en términos de costo. A estas alturas no alcanzamos a rehacer todos los experimentos y todos los análisis, podría quedar como problema abierto.
+			
+			
+			
+			
+			
+			
+			
+	
+	
+		
+
+% FIN DEL DOCUMENTO
+\end{document}

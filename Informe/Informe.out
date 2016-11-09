@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{Introducci\363n}{}% 1
+\BOOKMARK [1][-]{section.2}{Implementaci\363n}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Interfaces}{section.2}% 3
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Rectangle}{subsection.2.1}% 4
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Splitter}{subsection.2.1}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Clases}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Data}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Node}{subsection.2.2}% 8
+\BOOKMARK [3][-]{subsubsection.2.2.3}{RootNode}{subsection.2.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.4}{LeafNode}{subsection.2.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.2.5}{RTree}{subsection.2.2}% 11
+\BOOKMARK [3][-]{subsubsection.2.2.6}{Otras clases}{subsection.2.2}% 12
+\BOOKMARK [1][-]{section.3}{Experimentaci\363n}{}% 13
+\BOOKMARK [2][-]{subsection.3.1}{Hip\363tesis}{section.3}% 14
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Cota superior inserci\363n}{subsection.3.1}% 15
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Peor caso inserci\363n}{subsection.3.1}% 16
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Peor caso queries}{subsection.3.1}% 17
+\BOOKMARK [2][-]{subsection.3.2}{Resultados}{section.3}% 18
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Resultados num\351ricos}{subsection.3.2}% 19
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Gr\341ficos}{subsection.3.2}% 20
+\BOOKMARK [3][-]{subsubsection.3.2.3}{An\341lisis y conclusi\363n}{subsection.3.2}% 21
