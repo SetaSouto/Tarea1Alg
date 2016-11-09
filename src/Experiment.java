@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public class Experiment {
     private static int M = 4096;            // set to allocation unit size
-    private static int m = 4 * M / 10;
+        private static int m = 4 * M / 10;
     private static int maxCoord = 500001;   // 500 000 + 1 to compensate non-inclusion of the bound parameter in nextInt
     private static int maxDim = 100;
     private static PrintWriter writerCSV;
